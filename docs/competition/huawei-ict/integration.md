@@ -1,5 +1,11 @@
 # AgentArts 接入与复现
 
+## 当前配置状态
+
+用户已确认平台工作空间与部署地址先留空。`platform-config.example.json` 中的工作空间入口、HTTPS 地址、工作流 ID 和版本均为空，仅作配置记录，不会被运行时自动加载。`runtime.env.example` 的工具密钥同样为空，未配置时外部工具入口保持 503；管理员本地调试入口沿用已有 JWT。
+
+下文为取得平台资源后的接入步骤，当前无需据此开通账号或部署服务。
+
 ## 部署和认证
 
 复用现有 Node 后端与 Python 向量服务。后端部署到已授权的 HTTPS 域名；反向代理将 `/api/v1/agentarts/` 转发至 Node 服务。配置 `AGENTARTS_TOOL_API_KEY`，为运行数据目录提供写权限，备份 `data/agentarts-traces/`。正式使用原有模型和向量服务配置；`agentarts-local.ts` 仅用于离线验证。

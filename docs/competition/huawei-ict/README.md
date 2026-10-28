@@ -6,6 +6,8 @@
 
 已实现五个 HTTP 工具、工具认证、输入契约、独立校验增强、保留硬约束的替代方案、本地参考编排、持久化 Trace、后台调试面板及开发评测入口。尚未取得 AgentArts 工作空间及后端 HTTPS 地址，因此平台工作流注册、发布与真实调用尚待联调。不得把 `/decide` 的本地编排描述为已运行的 AgentArts 工作流。
 
+用户已于 2026-10-28 确认暂无平台和部署地址，先留空占位。接入字段保存在 [platform-config.example.json](platform-config.example.json)，工具密钥示例也保持为空；当前无需配置平台即可继续本地开发与材料准备。
+
 | 入口 | 用途 |
 |---|---|
 | [integration.md](integration.md) | 部署、五工具接口、AgentArts 逐节点映射与冒烟步骤 |
