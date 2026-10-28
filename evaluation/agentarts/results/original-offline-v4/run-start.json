@@ -1,0 +1,15 @@
+{
+  "git_commit": "69d7a09faa965a7105e7c401d1a7dd83a0af74e4",
+  "git_status": "?? evaluation/agentarts/results/local-offline-v4/",
+  "dataset_sha256": "dd342dc93b116fd36fbd5b252b4f9861d0b5caaad7aa25236773c9efbdf44cd5",
+  "profile": "original",
+  "run_config": {
+    "runtime_mode": "isolated_local_offline",
+    "model_requested": null,
+    "provider_model_identity": "not_called",
+    "vector_service": "not_initialized",
+    "workflow_version": null,
+    "tool_contract_version": "1.0.0",
+    "note": "本地规则和静态知识验证，未调用 AgentArts，也未验证在线模型或三路完整检索性能。"
+  }
+}
