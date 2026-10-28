@@ -32,6 +32,7 @@ data/model_cache/
 
 # TTS cache
 data/tts-cache/
+data/agentarts-traces/
 
 # Evaluation evidence generated locally
 results/runtime_smoke.json
@@ -86,4 +87,6 @@ output/
 
 # Local results
 results/
+!evaluation/agentarts/results/
+!evaluation/agentarts/results/**
 

@@ -7,8 +7,11 @@ const apiRouter = Router();
 import { visitorRouter } from './visitor';
 import { adminRouter } from './admin';
 import { authRouter } from './auth';
+import { agentArtsRouter, createAgentArtsRouter } from './agentarts';
 
 apiRouter.use('/auth', authRouter);
+apiRouter.use('/agentarts', agentArtsRouter);
+apiRouter.use('/admin/agentarts', verifyToken, createAgentArtsRouter({ trustedAdmin: true }));
 apiRouter.use('/visitor', visitorRouter);
 apiRouter.use('/admin', verifyToken, adminRouter);
 

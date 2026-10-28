@@ -1,0 +1,1747 @@
+{
+  "version": "development-v1",
+  "status": "development_candidates_not_blind",
+  "counts": {
+    "knowledge": 20,
+    "feasible_route": 20,
+    "infeasible": 15,
+    "clarification": 15,
+    "boundary": 10
+  },
+  "cases": [
+    {
+      "id": "fact-01",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山大佛有多高？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 1,
+        "question": "灵山大佛有多高？",
+        "expected_keywords": [
+          "88米",
+          "79米",
+          "101.5米"
+        ],
+        "category": "景点数据",
+        "source_spot": "灵山大佛",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "height",
+            "acceptable": [
+              "88米",
+              "88 米",
+              "88m"
+            ]
+          }
+        ],
+        "min_fact_hits": 1,
+        "forbidden": []
+      }
+    },
+    {
+      "id": "fact-02",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山大佛是什么时候落成开光的？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 2,
+        "question": "灵山大佛是什么时候落成开光的？",
+        "expected_keywords": [
+          "1997年",
+          "11月15日"
+        ],
+        "category": "历史背景",
+        "source_spot": "灵山大佛",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "year",
+            "acceptable": [
+              "1997年"
+            ]
+          },
+          {
+            "id": "date",
+            "acceptable": [
+              "11月15日"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-03",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山大佛的右手和左手分别代表什么？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 3,
+        "question": "灵山大佛的右手和左手分别代表什么？",
+        "expected_keywords": [
+          "无畏印",
+          "与愿印",
+          "痛苦",
+          "欢乐"
+        ],
+        "category": "文化内涵",
+        "source_spot": "灵山大佛",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "right_hand",
+            "acceptable": [
+              "无畏印",
+              "痛苦"
+            ]
+          },
+          {
+            "id": "left_hand",
+            "acceptable": [
+              "与愿印",
+              "欢乐"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-04",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "登云道有多少级？代表什么含义？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 4,
+        "question": "登云道有多少级？代表什么含义？",
+        "expected_keywords": [
+          "216",
+          "108",
+          "烦恼",
+          "愿望"
+        ],
+        "category": "文化内涵",
+        "source_spot": "灵山大佛",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "steps",
+            "acceptable": [
+              "216"
+            ]
+          },
+          {
+            "id": "meaning",
+            "acceptable": [
+              "108",
+              "烦恼",
+              "愿望"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-05",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山梵宫的建筑面积是多少？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 5,
+        "question": "灵山梵宫的建筑面积是多少？",
+        "expected_keywords": [
+          "7.2万",
+          "72000"
+        ],
+        "category": "景点数据",
+        "source_spot": "灵山梵宫",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "area",
+            "acceptable": [
+              "7.2万",
+              "72000"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-06",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山梵宫被誉为什麼？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 6,
+        "question": "灵山梵宫被誉为什麼？",
+        "expected_keywords": [
+          "东方卢浮宫",
+          "佛教艺术"
+        ],
+        "category": "景点数据",
+        "source_spot": "灵山梵宫",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "title",
+            "acceptable": [
+              "东方卢浮宫"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-07",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山梵宫获得过什么建筑奖项？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 7,
+        "question": "灵山梵宫获得过什么建筑奖项？",
+        "expected_keywords": [
+          "鲁班奖"
+        ],
+        "category": "景点数据",
+        "source_spot": "灵山梵宫",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "award",
+            "acceptable": [
+              "鲁班奖"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-08",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "九龙灌浴表演讲述的是什么故事？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 8,
+        "question": "九龙灌浴表演讲述的是什么故事？",
+        "expected_keywords": [
+          "佛陀诞生",
+          "释迦牟尼",
+          "九龙吐水"
+        ],
+        "category": "演艺信息",
+        "source_spot": "九龙灌浴",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "story",
+            "acceptable": [
+              "佛陀诞生",
+              "释迦牟尼"
+            ]
+          },
+          {
+            "id": "ritual",
+            "acceptable": [
+              "九龙吐水"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-09",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "九龙灌浴的总高和重量是多少？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 9,
+        "question": "九龙灌浴的总高和重量是多少？",
+        "expected_keywords": [
+          "27.5米",
+          "260吨"
+        ],
+        "category": "景点数据",
+        "source_spot": "九龙灌浴",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "height",
+            "acceptable": [
+              "27.5米"
+            ]
+          },
+          {
+            "id": "weight",
+            "acceptable": [
+              "260吨"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-10",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "五印坛城是什么风格的建筑？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 10,
+        "question": "五印坛城是什么风格的建筑？",
+        "expected_keywords": [
+          "藏传佛教",
+          "金顶红墙",
+          "小布达拉宫"
+        ],
+        "category": "景点数据",
+        "source_spot": "五印坛城",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "style",
+            "acceptable": [
+              "藏传佛教",
+              "藏式碉楼",
+              "藏式"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-11",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "祥符禅寺建于哪个朝代？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 11,
+        "question": "祥符禅寺建于哪个朝代？",
+        "expected_keywords": [
+          "唐代",
+          "贞观"
+        ],
+        "category": "历史背景",
+        "source_spot": "祥符禅寺",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "dynasty",
+            "acceptable": [
+              "唐代",
+              "贞观"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-12",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "祥符禅寺内有哪些历史遗迹？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 12,
+        "question": "祥符禅寺内有哪些历史遗迹？",
+        "expected_keywords": [
+          "六角井",
+          "千年银杏",
+          "祥符禅钟"
+        ],
+        "category": "景点数据",
+        "source_spot": "祥符禅寺",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "well",
+            "acceptable": [
+              "六角井",
+              "六角古井"
+            ]
+          },
+          {
+            "id": "ginkgo",
+            "acceptable": [
+              "千年银杏",
+              "千年古银杏"
+            ]
+          },
+          {
+            "id": "bell",
+            "acceptable": [
+              "祥符禅钟",
+              "江南第一钟"
+            ]
+          }
+        ],
+        "min_fact_hits": 3
+      }
+    },
+    {
+      "id": "fact-13",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山大照壁的尺寸是多少？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 13,
+        "question": "灵山大照壁的尺寸是多少？",
+        "expected_keywords": [
+          "39.8米",
+          "7米",
+          "华夏第一壁"
+        ],
+        "category": "景点数据",
+        "source_spot": "灵山大照壁",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "length",
+            "acceptable": [
+              "39.8米",
+              "39.8 米",
+              "39.8m"
+            ]
+          },
+          {
+            "id": "height",
+            "acceptable": [
+              "7米",
+              "7 米",
+              "7m"
+            ]
+          }
+        ],
+        "min_fact_hits": 2
+      }
+    },
+    {
+      "id": "fact-14",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "灵山大照壁上题写了什么字？谁题写的？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 14,
+        "question": "灵山大照壁上题写了什么字？谁题写的？",
+        "expected_keywords": [
+          "灵山胜境",
+          "赵朴初"
+        ],
+        "category": "文化内涵",
+        "source_spot": "灵山大照壁",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "inscription",
+            "acceptable": [
+              "灵山胜境"
+            ]
+          },
+          {
+            "id": "author",
+            "acceptable": [
+              "赵朴初"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-15",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "菩提大道有什么特色？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 15,
+        "question": "菩提大道有什么特色？",
+        "expected_keywords": [
+          "250米",
+          "印度",
+          "菩提树"
+        ],
+        "category": "景点数据",
+        "source_spot": "菩提大道",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "length",
+            "acceptable": [
+              "250米",
+              "250 米",
+              "250m"
+            ]
+          },
+          {
+            "id": "tree",
+            "acceptable": [
+              "印度",
+              "菩提树"
+            ]
+          }
+        ],
+        "min_fact_hits": 2
+      }
+    },
+    {
+      "id": "fact-16",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "百子戏弥勒是什么类型的景观？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 16,
+        "question": "百子戏弥勒是什么类型的景观？",
+        "expected_keywords": [
+          "青铜群雕",
+          "弥勒",
+          "祈福"
+        ],
+        "category": "景点数据",
+        "source_spot": "百子戏弥勒",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "type",
+            "acceptable": [
+              "青铜群雕"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-17",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "曼飞龙塔是复刻哪里的建筑？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 17,
+        "question": "曼飞龙塔是复刻哪里的建筑？",
+        "expected_keywords": [
+          "西双版纳",
+          "白塔",
+          "南传佛教"
+        ],
+        "category": "景点数据",
+        "source_spot": "曼飞龙塔",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "origin",
+            "acceptable": [
+              "西双版纳"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-18",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "无尽意斋是纪念谁的地方？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 18,
+        "question": "无尽意斋是纪念谁的地方？",
+        "expected_keywords": [
+          "赵朴初",
+          "纪念馆",
+          "四合院"
+        ],
+        "category": "景点数据",
+        "source_spot": "无尽意斋",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "person",
+            "acceptable": [
+              "赵朴初"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-19",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "佛足坛展示的是什么？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 19,
+        "question": "佛足坛展示的是什么？",
+        "expected_keywords": [
+          "佛足",
+          "青铜",
+          "脚印"
+        ],
+        "category": "景点数据",
+        "source_spot": "佛足坛",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "display",
+            "acceptable": [
+              "佛足",
+              "脚印"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "fact-20",
+      "category": "knowledge",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "knowledge",
+        "query": "五智门的建筑特点是什么？"
+      },
+      "expected_status": "success",
+      "fact_contract": {
+        "id": 20,
+        "question": "五智门的建筑特点是什么？",
+        "expected_keywords": [
+          "汉白玉",
+          "牌坊",
+          "五方五佛"
+        ],
+        "category": "景点数据",
+        "source_spot": "五智门",
+        "expected_behavior": "answer",
+        "facts": [
+          {
+            "id": "material",
+            "acceptable": [
+              "汉白玉"
+            ]
+          },
+          {
+            "id": "structure",
+            "acceptable": [
+              "牌坊"
+            ]
+          },
+          {
+            "id": "meaning",
+            "acceptable": [
+              "五方五佛"
+            ]
+          }
+        ],
+        "min_fact_hits": 3
+      }
+    },
+    {
+      "id": "route-01",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-001"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-02",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "limited",
+          "mustVisitSpotIds": [
+            "LS-003"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-03",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "wheelchair",
+          "mustVisitSpotIds": [
+            "LS-004"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-04",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-005"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-05",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "limited",
+          "mustVisitSpotIds": [
+            "LS-006"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-06",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "wheelchair",
+          "mustVisitSpotIds": [
+            "LS-008"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-07",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-009"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-08",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "limited",
+          "mustVisitSpotIds": [
+            "LS-010"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-09",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "wheelchair",
+          "mustVisitSpotIds": [
+            "LS-011"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-10",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-012"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-11",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "limited",
+          "mustVisitSpotIds": [
+            "LS-013"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-12",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "wheelchair",
+          "mustVisitSpotIds": [
+            "LS-014"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-13",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-015"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-14",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "limited",
+          "mustVisitSpotIds": [
+            "LS-016"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-15",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "wheelchair",
+          "mustVisitSpotIds": [
+            "LS-002"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-16",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-007"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-17",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "limited",
+          "mustVisitSpotIds": [
+            "LS-013"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-18",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "wheelchair",
+          "mustVisitSpotIds": [
+            "LS-006"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-19",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-014"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "route-20",
+      "category": "feasible_route",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "limited",
+          "mustVisitSpotIds": [
+            "LS-011"
+          ]
+        }
+      },
+      "expected_status": "success"
+    },
+    {
+      "id": "impossible-01",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-001"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-02",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-003"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-03",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-004"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-04",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-005"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-05",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-006"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-06",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-008"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-07",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-009"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-08",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-010"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-09",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-011"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-10",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-012"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-11",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-013"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-12",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-014"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-13",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-015"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-14",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-016"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "impossible-15",
+      "category": "infeasible",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 1,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-002"
+          ]
+        }
+      },
+      "expected_status": "infeasible"
+    },
+    {
+      "id": "missing-01",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-001"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentLocation"
+      ]
+    },
+    {
+      "id": "missing-02",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-003"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentTime"
+      ]
+    },
+    {
+      "id": "missing-03",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-004"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "remainingMinutes"
+      ]
+    },
+    {
+      "id": "missing-04",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-005"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentLocation"
+      ]
+    },
+    {
+      "id": "missing-05",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-006"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentTime"
+      ]
+    },
+    {
+      "id": "missing-06",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-008"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "remainingMinutes"
+      ]
+    },
+    {
+      "id": "missing-07",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-009"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentLocation"
+      ]
+    },
+    {
+      "id": "missing-08",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-010"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentTime"
+      ]
+    },
+    {
+      "id": "missing-09",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-011"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "remainingMinutes"
+      ]
+    },
+    {
+      "id": "missing-10",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-012"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentLocation"
+      ]
+    },
+    {
+      "id": "missing-11",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-013"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentTime"
+      ]
+    },
+    {
+      "id": "missing-12",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-014"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "remainingMinutes"
+      ]
+    },
+    {
+      "id": "missing-13",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-015"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentLocation"
+      ]
+    },
+    {
+      "id": "missing-14",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-016"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "currentTime"
+      ]
+    },
+    {
+      "id": "missing-15",
+      "category": "clarification",
+      "endpoint": "/decide",
+      "input": {
+        "intent": "route",
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "mobility": "normal",
+          "mustVisitSpotIds": [
+            "LS-002"
+          ]
+        }
+      },
+      "expected_status": "needs_clarification",
+      "missing_fields": [
+        "remainingMinutes"
+      ]
+    },
+    {
+      "id": "boundary-empty-query",
+      "category": "boundary",
+      "endpoint": "/tools/extract_scene_state",
+      "input": {
+        "query": ""
+      },
+      "expected_http": 400,
+      "omit_auth": false
+    },
+    {
+      "id": "boundary-injected-route",
+      "category": "boundary",
+      "endpoint": "/tools/plan_route",
+      "input": {
+        "scene_state": {
+          "steps": [],
+          "feasible": true
+        }
+      },
+      "expected_http": 400,
+      "omit_auth": false
+    },
+    {
+      "id": "boundary-bad-clock",
+      "category": "boundary",
+      "endpoint": "/tools/plan_route",
+      "input": {
+        "scene_state": {
+          "currentTime": "25:00"
+        }
+      },
+      "expected_http": 400,
+      "omit_auth": false
+    },
+    {
+      "id": "boundary-negative-time",
+      "category": "boundary",
+      "endpoint": "/tools/plan_route",
+      "input": {
+        "scene_state": {
+          "remainingMinutes": -1
+        }
+      },
+      "expected_http": 400,
+      "omit_auth": false
+    },
+    {
+      "id": "boundary-unknown-tool",
+      "category": "boundary",
+      "endpoint": "/tools/invent_route",
+      "input": {},
+      "expected_http": 404,
+      "omit_auth": false
+    },
+    {
+      "id": "boundary-no-intent",
+      "category": "boundary",
+      "endpoint": "/decide",
+      "input": {
+        "query": "你好"
+      },
+      "expected_http": 400,
+      "omit_auth": false
+    },
+    {
+      "id": "boundary-no-key",
+      "category": "boundary",
+      "endpoint": "/tools/plan_route",
+      "input": {
+        "scene_state": {}
+      },
+      "expected_http": 401,
+      "omit_auth": true
+    },
+    {
+      "id": "boundary-bad-route",
+      "category": "boundary",
+      "endpoint": "/tools/validate_route",
+      "input": {
+        "scene_state": {
+          "currentLocation": "south_gate",
+          "currentTime": "09:00",
+          "remainingMinutes": 240,
+          "mobility": "normal",
+          "mustVisitSpotIds": []
+        },
+        "route": {
+          "feasible": true
+        }
+      },
+      "expected_http": 400,
+      "omit_auth": false
+    },
+    {
+      "id": "fault-timeout",
+      "category": "boundary",
+      "requires_fixture": true,
+      "fixture_test": "backend/tests/agentarts/http.test.ts",
+      "expected_status": "error",
+      "note": "仅在隔离测试桩中注入异常；真实平台需在隔离部署复现，未执行不得计通过。"
+    },
+    {
+      "id": "fault-tool-failure",
+      "category": "boundary",
+      "requires_fixture": true,
+      "fixture_test": "backend/tests/agentarts/http.test.ts",
+      "expected_status": "error",
+      "note": "仅在隔离测试桩中注入异常；真实平台需在隔离部署复现，未执行不得计通过。"
+    }
+  ]
+}

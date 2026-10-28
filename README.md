@@ -1,3 +1,9 @@
+# 华为 ICT 创新赛参赛改造分支
+
+当前分支 `codex/huawei-ict-agentarts` 正在执行“灵小禅——基于华为 AgentArts 的可信文旅决策智能体”方案。五个 HTTP 工具、本地闭环和后台调试已实现；AgentArts 平台真实联调尚待工作空间与 HTTPS 部署。
+
+实现状态、复现命令和材料入口见 [华为 ICT 实施包](docs/competition/huawei-ict/README.md)。以下保留既有项目说明，历史成绩不等于改造版成绩。
+
 <div align="center">
 
 # 灵小禅 · 灵山胜境可信文旅决策智能体
