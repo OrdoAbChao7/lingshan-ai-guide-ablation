@@ -1,8 +1,20 @@
 import unittest
-from evaluate import route_violations, assess, normalize_original
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+from evaluate import route_violations, assess, normalize_original, EvidenceJournal
 
 
 class EvaluatorTests(unittest.TestCase):
+    def test_journal_opens_once_and_preserves_each_record(self):
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / 'evidence.jsonl'
+            journal = EvidenceJournal(path)
+            with patch.object(Path, 'open', side_effect=OSError('reopening denied')):
+                journal.append({'id': 1}); journal.append({'id': 2})
+                journal.close()
+            self.assertEqual(len(path.read_text(encoding='utf-8').splitlines()), 2)
+
     def test_forged_success_without_route_fails(self):
         case = {'category': 'feasible_route', 'expected_status': 'success', 'input': {'scene_state': {}}}
         self.assertFalse(assess(case, 200, {'status': 'success', 'data': {}}, {})['passed'])

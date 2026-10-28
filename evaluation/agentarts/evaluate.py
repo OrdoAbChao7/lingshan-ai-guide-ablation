@@ -147,6 +147,19 @@ def normalize_original(raw):
             'original_response': raw}
 
 
+class EvidenceJournal:
+    """Keep one append stream open, so progress never truncates earlier evidence."""
+    def __init__(self, path):
+        self.stream = Path(path).open('x', encoding='utf-8')
+
+    def append(self, record):
+        self.stream.write(json.dumps(record, ensure_ascii=False) + '\n')
+        self.stream.flush()
+
+    def close(self):
+        self.stream.close()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base-url', default='http://127.0.0.1:8010')
@@ -168,10 +181,16 @@ def main():
     graph = {name: json.loads((ROOT / f'data/route/{name}.json').read_text(encoding='utf-8')) for name in ['spots', 'edges', 'performances']}
     selected = set(args.categories.split(','))
     records = []
+    (args.output_dir / 'run-start.json').write_text(json.dumps({
+        'git_commit': git('rev-parse', 'HEAD'), 'git_status': git('status', '--porcelain'),
+        'dataset_sha256': hashlib.sha256(raw_cases).hexdigest(), 'profile': args.profile, 'run_config': config,
+    }, ensure_ascii=False, indent=2), encoding='utf-8')
+    journal = EvidenceJournal(args.output_dir / 'records.jsonl')
     for case in dataset['cases']:
         if case['category'] not in selected: continue
         if case.get('requires_fixture') or (args.profile == 'original' and case['category'] == 'boundary'):
-            records.append({'id': case['id'], 'category': case['category'], 'execution': 'not_run', 'reason': 'requires_isolated_fixture_or_tool_adapter'})
+            skipped = {'id': case['id'], 'category': case['category'], 'execution': 'not_run', 'reason': 'requires_isolated_fixture_or_tool_adapter'}
+            records.append(skipped); journal.append(skipped)
             continue
         endpoint = args.base_url.rstrip('/') + '/api/v1/agentarts' + case['endpoint']
         body = case['input']
@@ -192,8 +211,9 @@ def main():
         if not case.get('expected_http') and args.profile == 'local_reference':
             record['audit_linked'] = audit_linked(args.base_url, output, key)
         records.append(record)
+        journal.append(record)
         print(f'{case["id"]}: {"PASS" if result["passed"] else "FAIL"} ({code}, {latency}ms)')
-        (args.output_dir / 'records.json').write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding='utf-8')
+    journal.close()
     executed = [r for r in records if r['execution'] == 'executed']
     latencies = sorted(r['latency_ms'] for r in executed)
     source_paths = sorted(set(list((ROOT / 'backend/src').rglob('*.ts')) + list((ROOT / 'backend/scripts').glob('*.ts')) +
