@@ -1,3 +1,32 @@
+# 华为 ICT 创新赛参赛改造分支
+
+当前分支 `codex/huawei-ict-agentarts` 正在执行“灵小禅——基于华为 AgentArts 的可信文旅决策智能体”方案。五个 HTTP 工具、本地闭环和后台调试已实现；AgentArts 平台真实联调尚待工作空间与 HTTPS 部署。
+
+实现状态、复现命令和材料入口见 [华为 ICT 实施包](docs/competition/huawei-ict/README.md)。以下保留既有项目说明，历史成绩不等于改造版成绩。
+
+---
+
+## SkyGuard 安全决策系统（独立业务域）
+
+分支 `feat/skyguard-migration` 在同一仓库内新增了**独立的安全业务域**：
+面向大型活动与人员密集场所的应急疏散辅助决策原型。
+
+```text
+人群观测 → 风险评估 → 容量约束疏散规划 → 独立安全校验 → 四态状态机 → 指挥大屏
+```
+
+- **独立领域模型**：区域 / 疏散通道 / 出口 / 观测 / 事件 / 方案，与旅游业务模型完全隔离；
+- **容量约束规划**：时间扩展最小费用最大流，同时满足通道与出口容量、流量守恒、疏散时限；
+- **独立安全校验器**：15 类硬约束检查，纯函数，不采信规划器自报的成功状态；
+- **四态状态机**：`NORMAL` / `REROUTE` / `DEGRADED` / `REJECT`，数据不可信时不发布新路线；
+- **指挥大屏**：`/command-center`，深色运维界面，所有内容来自真实后端 API；
+- **可复现演示**：`npm run demo:safety --prefix backend` 一键跑通三个验收场景。
+
+启动后访问 **`/command-center`**，或阅读 [SkyGuard 文档](docs/skyguard/README.md)。
+
+> ⚠️ SkyGuard 是研究原型：场景为合成数据，昇腾硬件推理未经实测，
+> **不能用于真实疏散指挥**。引用前必须阅读 [局限说明](docs/skyguard/LIMITATIONS.md)。
+
 <div align="center">
 
 # 灵小禅 · 灵山胜境可信文旅决策智能体
@@ -224,14 +253,17 @@ lingshan-ai-guide/
 ├── backend/
 │   ├── src/api/v1/                 # 游客、认证与管理 API
 │   ├── src/services/               # RAG、场景理解、路线规划、校验、TTS、情绪
+│   ├── src/services/safety/        # SkyGuard 安全域（感知/规划/校验/状态机/审计）
 │   └── python/                     # 向量检索、TTS、ASR 与评测工具
 ├── frontend/
 │   ├── src/pages/visitor/           # 首页、问答页、路线推荐页
 │   ├── src/pages/admin/             # 管理后台页面
+│   ├── src/pages/command-center/    # SkyGuard 指挥大屏
 │   └── public/                     # Live2D 模型与景点静态资源
 ├── data/
 │   ├── raw/                        # 官方指南与知识库原始语料
-│   └── route/                      # 23 个节点、30 条道路边、设施与演出数据
+│   ├── route/                      # 23 个节点、30 条道路边、设施与演出数据
+│   └── safety/                     # SkyGuard 合成演示场景（非真实测绘）
 ├── docs/                           # 架构、评测、竞赛与限制说明
 ├── evaluation/                     # 版本化评测结果与证据清单
 ├── release/competition_final/      # 当前竞赛交付包

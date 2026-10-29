@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import ReactECharts from 'echarts-for-react';
 import { adminAPI } from '../../services/api';
+import AgentArtsPanel from './AgentArtsPanel';
 
 interface TrendPoint { date: string; score: number; }
 interface HourlyPoint { hour: number; count: number; }
@@ -254,10 +255,12 @@ export default function DashboardPage() {
           { label: <span><DashboardOutlined /> 概览</span>, key: 'overview' },
           { label: <span><SearchOutlined /> 问答明细</span>, key: 'detail' },
           { label: <span><SmileOutlined /> 满意度分析</span>, key: 'satisfaction' },
+          { label: 'AgentArts 调试', key: 'agentarts' },
         ]}
       />
 
       <div style={{ padding: '0 24px 40px' }}>
+        {activeTab === 'agentarts' && <AgentArtsPanel />}
         {activeTab === 'overview' && (
           <>
             {/* Stats */}

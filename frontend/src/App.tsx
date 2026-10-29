@@ -11,6 +11,7 @@ import DashboardPage from './pages/admin/DashboardPage';
 import KnowledgeBasePage from './pages/admin/KnowledgeBasePage';
 import DigitalHumanPage from './pages/admin/DigitalHumanPage';
 import SentimentReportPage from './pages/admin/SentimentReportPage';
+import CommandCenterPage from './pages/command-center/CommandCenterPage';
 
 /** Redirect unauthenticated users to admin login. */
 function AdminGuard({ children }: { children: React.ReactNode }) {
@@ -40,6 +41,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/qa" element={<QAPage />} />
           <Route path="/recommend" element={<RecommendPage />} />
+
+          {/* SkyGuard 指挥大屏（独立安全业务域，读取 /api/v1/safety/*） */}
+          <Route path="/command-center" element={<CommandCenterPage />} />
 
           {/* Admin — protected by auth guard */}
           <Route path="/admin/login" element={<AdminLoginPage />} />

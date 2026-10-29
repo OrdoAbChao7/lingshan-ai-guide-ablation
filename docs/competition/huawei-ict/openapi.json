@@ -1,0 +1,2791 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "灵小禅 AgentArts HTTP Tools",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://REPLACE_WITH_YOUR_DOMAIN/api/v1/agentarts"
+    }
+  ],
+  "security": [
+    {
+      "ApiKey": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    }
+  },
+  "paths": {
+    "/tools/extract_scene_state": {
+      "post": {
+        "operationId": "extract_scene_state",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Trace-Id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "工具返回契约；success 之外的业务状态同样使用 HTTP 200。平台必须判断 status。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "contract_version",
+                    "trace_id",
+                    "call_id",
+                    "status"
+                  ],
+                  "properties": {
+                    "contract_version": {
+                      "type": "string"
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "call_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "execution_origin": {
+                      "type": "string",
+                      "enum": [
+                        "local_tools",
+                        "local_reference"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "needs_clarification",
+                        "infeasible",
+                        "no_evidence",
+                        "error"
+                      ]
+                    },
+                    "latency_ms": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools/search_knowledge": {
+      "post": {
+        "operationId": "search_knowledge",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Trace-Id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "工具返回契约；success 之外的业务状态同样使用 HTTP 200。平台必须判断 status。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "contract_version",
+                    "trace_id",
+                    "call_id",
+                    "status"
+                  ],
+                  "properties": {
+                    "contract_version": {
+                      "type": "string"
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "call_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "execution_origin": {
+                      "type": "string",
+                      "enum": [
+                        "local_tools",
+                        "local_reference"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "needs_clarification",
+                        "infeasible",
+                        "no_evidence",
+                        "error"
+                      ]
+                    },
+                    "latency_ms": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools/plan_route": {
+      "post": {
+        "operationId": "plan_route",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Trace-Id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "scene_state": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "currentLocation": {
+                        "type": "string"
+                      },
+                      "currentTime": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "remainingMinutes": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "partyType": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "mobility": {
+                        "type": "string",
+                        "enum": [
+                          "normal",
+                          "limited",
+                          "wheelchair",
+                          "unknown"
+                        ]
+                      },
+                      "mealRequested": {
+                        "type": "boolean"
+                      },
+                      "interests": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "mustVisitSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceTimes": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string",
+                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                        }
+                      },
+                      "visitedSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "budget": {
+                        "type": "string",
+                        "enum": [
+                          "economy",
+                          "normal",
+                          "premium"
+                        ]
+                      },
+                      "pace": {
+                        "type": "string",
+                        "enum": [
+                          "slow",
+                          "normal",
+                          "fast"
+                        ]
+                      },
+                      "missingCriticalFields": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": []
+                  }
+                },
+                "required": [
+                  "scene_state"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "工具返回契约；success 之外的业务状态同样使用 HTTP 200。平台必须判断 status。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "contract_version",
+                    "trace_id",
+                    "call_id",
+                    "status"
+                  ],
+                  "properties": {
+                    "contract_version": {
+                      "type": "string"
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "call_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "execution_origin": {
+                      "type": "string",
+                      "enum": [
+                        "local_tools",
+                        "local_reference"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "needs_clarification",
+                        "infeasible",
+                        "no_evidence",
+                        "error"
+                      ]
+                    },
+                    "latency_ms": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools/validate_route": {
+      "post": {
+        "operationId": "validate_route",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Trace-Id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "scene_state": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "currentLocation": {
+                        "type": "string"
+                      },
+                      "currentTime": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "remainingMinutes": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "partyType": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "mobility": {
+                        "type": "string",
+                        "enum": [
+                          "normal",
+                          "limited",
+                          "wheelchair",
+                          "unknown"
+                        ]
+                      },
+                      "mealRequested": {
+                        "type": "boolean"
+                      },
+                      "interests": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "mustVisitSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceTimes": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string",
+                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                        }
+                      },
+                      "visitedSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "budget": {
+                        "type": "string",
+                        "enum": [
+                          "economy",
+                          "normal",
+                          "premium"
+                        ]
+                      },
+                      "pace": {
+                        "type": "string",
+                        "enum": [
+                          "slow",
+                          "normal",
+                          "fast"
+                        ]
+                      },
+                      "missingCriticalFields": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": []
+                  },
+                  "route": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "startTime": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "steps": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "spotId": {
+                              "type": "string"
+                            },
+                            "arrive": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            },
+                            "start": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            },
+                            "end": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            },
+                            "walkMinutes": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1440
+                            },
+                            "visitMinutes": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1440
+                            },
+                            "waitingMinutes": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1440
+                            },
+                            "performanceDurationMinutes": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1440
+                            },
+                            "pathSpotIds": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "maxItems": 100
+                            },
+                            "reasonCode": {
+                              "type": "string"
+                            },
+                            "performanceId": {
+                              "type": "string"
+                            },
+                            "performanceName": {
+                              "type": "string"
+                            },
+                            "performanceStartTime": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            }
+                          },
+                          "required": [
+                            "spotId",
+                            "arrive",
+                            "start",
+                            "end",
+                            "walkMinutes",
+                            "visitMinutes",
+                            "reasonCode"
+                          ]
+                        },
+                        "maxItems": 23
+                      },
+                      "totalMinutes": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1440
+                      },
+                      "walkingMinutes": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1440
+                      },
+                      "visitingMinutes": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1440
+                      },
+                      "waitingMinutes": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1440
+                      },
+                      "feasible": {
+                        "type": "boolean"
+                      },
+                      "outcome": {
+                        "type": "string",
+                        "enum": [
+                          "feasible",
+                          "feasible_with_rejected_preferences",
+                          "needs_clarification",
+                          "infeasible"
+                        ]
+                      },
+                      "satisfiedConstraints": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "rejectedRequests": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "item": {
+                              "type": "string"
+                            },
+                            "reasonCode": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "item",
+                            "reasonCode"
+                          ]
+                        }
+                      },
+                      "violations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            },
+                            "message": {
+                              "type": "string"
+                            },
+                            "stepIndex": {
+                              "type": "integer",
+                              "minimum": 0
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "startTime",
+                      "steps",
+                      "totalMinutes",
+                      "walkingMinutes",
+                      "visitingMinutes",
+                      "waitingMinutes"
+                    ]
+                  }
+                },
+                "required": [
+                  "scene_state",
+                  "route"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "工具返回契约；success 之外的业务状态同样使用 HTTP 200。平台必须判断 status。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "contract_version",
+                    "trace_id",
+                    "call_id",
+                    "status"
+                  ],
+                  "properties": {
+                    "contract_version": {
+                      "type": "string"
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "call_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "execution_origin": {
+                      "type": "string",
+                      "enum": [
+                        "local_tools",
+                        "local_reference"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "needs_clarification",
+                        "infeasible",
+                        "no_evidence",
+                        "error"
+                      ]
+                    },
+                    "latency_ms": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools/suggest_alternative": {
+      "post": {
+        "operationId": "suggest_alternative",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Trace-Id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "scene_state": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "currentLocation": {
+                        "type": "string"
+                      },
+                      "currentTime": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "remainingMinutes": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "partyType": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "mobility": {
+                        "type": "string",
+                        "enum": [
+                          "normal",
+                          "limited",
+                          "wheelchair",
+                          "unknown"
+                        ]
+                      },
+                      "mealRequested": {
+                        "type": "boolean"
+                      },
+                      "interests": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "mustVisitSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceTimes": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string",
+                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                        }
+                      },
+                      "visitedSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "budget": {
+                        "type": "string",
+                        "enum": [
+                          "economy",
+                          "normal",
+                          "premium"
+                        ]
+                      },
+                      "pace": {
+                        "type": "string",
+                        "enum": [
+                          "slow",
+                          "normal",
+                          "fast"
+                        ]
+                      },
+                      "missingCriticalFields": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": []
+                  },
+                  "failure_reasons": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "maxItems": 30
+                  }
+                },
+                "required": [
+                  "scene_state",
+                  "failure_reasons"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "工具返回契约；success 之外的业务状态同样使用 HTTP 200。平台必须判断 status。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "contract_version",
+                    "trace_id",
+                    "call_id",
+                    "status"
+                  ],
+                  "properties": {
+                    "contract_version": {
+                      "type": "string"
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "call_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "execution_origin": {
+                      "type": "string",
+                      "enum": [
+                        "local_tools",
+                        "local_reference"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "needs_clarification",
+                        "infeasible",
+                        "no_evidence",
+                        "error"
+                      ]
+                    },
+                    "latency_ms": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decide": {
+      "post": {
+        "operationId": "local_reference_decision",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Trace-Id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "intent": {
+                    "type": "string",
+                    "enum": [
+                      "knowledge",
+                      "route"
+                    ]
+                  },
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "scene_state": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "currentLocation": {
+                        "type": "string"
+                      },
+                      "currentTime": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "remainingMinutes": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "partyType": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "mobility": {
+                        "type": "string",
+                        "enum": [
+                          "normal",
+                          "limited",
+                          "wheelchair",
+                          "unknown"
+                        ]
+                      },
+                      "mealRequested": {
+                        "type": "boolean"
+                      },
+                      "interests": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "mustVisitSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "preferredPerformanceTimes": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string",
+                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                        }
+                      },
+                      "visitedSpotIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "budget": {
+                        "type": "string",
+                        "enum": [
+                          "economy",
+                          "normal",
+                          "premium"
+                        ]
+                      },
+                      "pace": {
+                        "type": "string",
+                        "enum": [
+                          "slow",
+                          "normal",
+                          "fast"
+                        ]
+                      },
+                      "missingCriticalFields": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": []
+                  }
+                },
+                "required": [
+                  "intent"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "工具返回契约；success 之外的业务状态同样使用 HTTP 200。平台必须判断 status。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "contract_version",
+                    "trace_id",
+                    "call_id",
+                    "status"
+                  ],
+                  "properties": {
+                    "contract_version": {
+                      "type": "string"
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "call_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "execution_origin": {
+                      "type": "string",
+                      "enum": [
+                        "local_tools",
+                        "local_reference"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "needs_clarification",
+                        "infeasible",
+                        "no_evidence",
+                        "error"
+                      ]
+                    },
+                    "latency_ms": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "error": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "请求、认证、繁忙或执行错误；尚未开始执行时可能没有 trace_id/call_id。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "error"
+                      ]
+                    },
+                    "trace_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "error": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "仅本地参考编排；AgentArts 应分别调用五个工具。knowledge 需要 query；route 需要 query 或 scene_state。"
+      }
+    },
+    "/traces/{trace_id}": {
+      "get": {
+        "operationId": "read_trace",
+        "parameters": [
+          {
+            "name": "trace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "已保存的调用记录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trace_id": {
+                      "type": "string"
+                    },
+                    "records": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
