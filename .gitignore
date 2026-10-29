@@ -30,6 +30,9 @@ data/uploads/
 data/chroma_db/
 data/model_cache/
 
+# SkyGuard 运行时审计日志（每次运行重新生成）
+data/safety/audit/
+
 # TTS cache
 data/tts-cache/
 data/agentarts-traces/

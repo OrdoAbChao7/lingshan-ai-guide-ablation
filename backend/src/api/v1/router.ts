@@ -8,10 +8,12 @@ import { visitorRouter } from './visitor';
 import { adminRouter } from './admin';
 import { authRouter } from './auth';
 import { agentArtsRouter, createAgentArtsRouter } from './agentarts';
+import { safetyRouter } from './safety';
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/agentarts', agentArtsRouter);
 apiRouter.use('/admin/agentarts', verifyToken, createAgentArtsRouter({ trustedAdmin: true }));
+apiRouter.use('/safety', safetyRouter);
 apiRouter.use('/visitor', visitorRouter);
 apiRouter.use('/admin', verifyToken, adminRouter);
 

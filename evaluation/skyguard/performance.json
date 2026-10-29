@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-10-29T11:30:57.500Z",
+  "host": {
+    "platform": "win32",
+    "node": "v24.19.0",
+    "cpu": "AMD Ryzen 7 7745HX with Radeon Graphics        "
+  },
+  "note": "本基准只测量本机单进程计算延迟，不包含网络往返、前端渲染与真实昇腾推理。",
+  "results": [
+    {
+      "name": "planEvacuation (6 regions / 11 corridors)",
+      "iterations": 30,
+      "min_ms": 0.119,
+      "mean_ms": 0.271,
+      "p50_ms": 0.202,
+      "p95_ms": 0.672,
+      "max_ms": 0.93
+    },
+    {
+      "name": "validateSafetyPlan (6 regions / 11 corridors)",
+      "iterations": 150,
+      "min_ms": 0.02,
+      "mean_ms": 0.032,
+      "p50_ms": 0.022,
+      "p95_ms": 0.051,
+      "max_ms": 0.717
+    },
+    {
+      "name": "planEvacuation grid 3x3 (horizon 10)",
+      "iterations": 7,
+      "min_ms": 0.364,
+      "mean_ms": 0.441,
+      "p50_ms": 0.392,
+      "p95_ms": 0.678,
+      "max_ms": 0.678,
+      "nodes": 99
+    },
+    {
+      "name": "planEvacuation grid 5x5 (horizon 10)",
+      "iterations": 7,
+      "min_ms": 2.371,
+      "mean_ms": 2.751,
+      "p50_ms": 2.779,
+      "p95_ms": 3.242,
+      "max_ms": 3.242,
+      "nodes": 275
+    },
+    {
+      "name": "planEvacuation grid 7x7 (horizon 10)",
+      "iterations": 7,
+      "min_ms": 4.965,
+      "mean_ms": 5.225,
+      "p50_ms": 5.154,
+      "p95_ms": 5.786,
+      "max_ms": 5.786,
+      "nodes": 539
+    },
+    {
+      "name": "decision.recompute end-to-end (incl. audit append)",
+      "iterations": 30,
+      "min_ms": 0.515,
+      "mean_ms": 0.687,
+      "p50_ms": 0.6,
+      "p95_ms": 0.924,
+      "max_ms": 2.513
+    }
+  ]
+}

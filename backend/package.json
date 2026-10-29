@@ -7,7 +7,10 @@
     "dev": "tsx src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "tsx --test tests/**/*.test.ts"
+    "test": "tsx --test tests/**/*.test.ts",
+    "test:safety": "tsx --test tests/safety/*.test.ts",
+    "bench:safety": "tsx scripts/skyguard-benchmark.ts --iterations 30 --out ../evaluation/skyguard/performance.json",
+    "demo:safety": "tsx scripts/skyguard-demo.ts"
   },
   "dependencies": {
     "chromadb": "^1.9.4",
