@@ -1,0 +1,155 @@
+/* 游客感受度报告页私有样式 */
+
+.rp-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-6) var(--sp-4);
+  text-align: center;
+}
+.rp-error-icon {
+  font-size: 26px;
+  color: var(--danger);
+}
+.rp-error h2 {
+  margin: 0;
+  font-size: var(--fs-16);
+}
+.rp-error p {
+  margin: 0;
+  color: var(--text-3);
+  font-size: var(--fs-13);
+}
+
+.rp-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.rp-bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+.rp-bar {
+  color: var(--text-3);
+}
+.rp-bar--ok {
+  color: var(--ok);
+}
+.rp-bar--warn {
+  color: var(--warn);
+}
+.rp-bar--danger {
+  color: var(--danger);
+}
+.rp-bar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-bottom: 2px;
+}
+.rp-bar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-12);
+  color: var(--text-2);
+}
+.rp-bar-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-12);
+  color: var(--text-1);
+}
+
+/* ---- AI 总结正文（Markdown 渲染结果） ---- */
+
+.rp-prose {
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-2);
+  border: 1px solid var(--line-1);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface-1));
+  font-size: var(--fs-14);
+  line-height: 1.9;
+  color: var(--text-2);
+}
+.rp-prose .rp-p {
+  margin: 0 0 var(--sp-3);
+}
+.rp-prose .rp-p:last-child {
+  margin-bottom: 0;
+}
+.rp-prose .rp-h2,
+.rp-prose .rp-h3,
+.rp-prose .rp-h4,
+.rp-prose .rp-h5 {
+  margin: var(--sp-4) 0 var(--sp-2);
+  color: var(--text-1);
+  line-height: 1.4;
+}
+.rp-prose .rp-h2 {
+  font-size: var(--fs-20);
+}
+.rp-prose .rp-h3 {
+  font-size: var(--fs-16);
+}
+.rp-prose .rp-h4 {
+  font-size: var(--fs-14);
+}
+.rp-prose .rp-h5 {
+  font-size: var(--fs-13);
+  color: var(--text-2);
+}
+.rp-prose .rp-h2:first-child,
+.rp-prose .rp-h3:first-child {
+  margin-top: 0;
+}
+.rp-prose strong {
+  color: var(--brand-red-dark);
+  font-weight: 600;
+}
+.rp-prose .rp-ul {
+  margin: var(--sp-2) 0;
+  padding-left: var(--sp-5);
+}
+.rp-prose .rp-li {
+  margin: var(--sp-1) 0;
+}
+.rp-prose .rp-li-2 {
+  margin-left: var(--sp-4);
+  color: var(--text-3);
+}
+.rp-prose .rp-quote {
+  margin: var(--sp-2) 0;
+  padding: var(--sp-2) var(--sp-4);
+  border-left: 2px solid var(--brand-gold);
+  background: var(--brand-gold-soft);
+  color: var(--text-2);
+}
+.rp-prose .rp-code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  background: var(--surface-3);
+  padding: 1px 5px;
+  border-radius: var(--r-1);
+}
+.rp-prose .rp-hr {
+  border: none;
+  border-top: 1px solid var(--line-2);
+  margin: var(--sp-4) 0;
+}
+.rp-prose .rp-empty {
+  margin: 0;
+  color: var(--text-3);
+}
+
+@media (max-width: 640px) {
+  .rp-kpi-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

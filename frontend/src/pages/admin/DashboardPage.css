@@ -1,0 +1,33 @@
+/* 运营概览页私有样式（壳层与通用组件见 styles/ui.css） */
+
+.adm-filterbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.adm-filterbar-note {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  color: var(--text-3);
+}
+
+.adm-mono-cell {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-12);
+  color: var(--text-2);
+}
+
+.adm-panel-inline-head {
+  padding: var(--sp-4) var(--sp-5) 0;
+}
+.adm-panel-inline-head .ui-panel-head {
+  margin-bottom: var(--sp-3);
+}
+
+/* ECharts tooltip 跟随设计令牌 */
+.adm-shell .ui-panel canvas {
+  border-radius: var(--r-2);
+}

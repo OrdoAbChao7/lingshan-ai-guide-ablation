@@ -12,6 +12,7 @@ import portraitCeladon from '../../assets/portrait-celadon.png';
 import portraitTangSplendor from '../../assets/portrait-tang-splendor.png';
 import portraitInkWash from '../../assets/portrait-ink-wash.png';
 import { readAudioVolume } from './audio-context';
+import { LingMark } from '../brand/LingMark';
 import './DigitalHuman.css';
 
 const Live2DCanvas = lazy(() => import('./Live2DCanvas'));
@@ -130,7 +131,7 @@ const DigitalHuman = forwardRef<DigitalHumanHandle, Props>(
             {/* Ultimate fallback — emoji placeholder */}
             {(!live2dOk || !live2dLoaded) && imgErr && (
               <div className="dh-char__fallback">
-                <span>🏯</span>
+                <span className="dh-char__mark"><LingMark size={44} strokeWidth={1.2} /></span>
                 <span>灵小禅</span>
                 <span>AI 导游</span>
               </div>

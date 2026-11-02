@@ -201,6 +201,7 @@ $env:ASCEND_HOME_PATH      = "C:\CANN\latest"
 - [`TEST_REPORT.md`](./TEST_REPORT.md) — 全部测试命令与结果、T01–T15、回归
 - [`LIMITATIONS.md`](./LIMITATIONS.md) — **局限与禁止表述，引用前必读**
 - [`PERFORMANCE.md`](./PERFORMANCE.md) — 性能实测
+- [`../UI_DESIGN_SYSTEM.md`](../UI_DESIGN_SYSTEM.md) — **全站 UI 设计系统**（含大屏深色域、状态色语义、无障碍规则；改 UI 前必读）
 - [`MIGRATION.md`](./MIGRATION.md) — 迁移差异清单、API 一览、已实现/未实现
 
 ## 10. 不适用范围

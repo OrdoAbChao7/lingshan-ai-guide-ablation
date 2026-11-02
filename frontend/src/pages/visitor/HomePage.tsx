@@ -6,7 +6,12 @@ import {
   SmileOutlined, EnvironmentOutlined, RobotOutlined,
   ThunderboltOutlined, StarFilled, SettingOutlined,
   AimOutlined, LoadingOutlined, RightOutlined,
+  ColumnHeightOutlined, TagsOutlined, ClockCircleOutlined,
+  StarOutlined, ReadOutlined, ManOutlined, ShopOutlined,
+  HeartOutlined, LoginOutlined, InfoCircleOutlined,
+  HomeOutlined, CoffeeOutlined, CarOutlined, WarningOutlined,
 } from '@ant-design/icons';
+import { LingMark } from '../../components/brand/LingMark';
 import { openBaiduNavigation, type LatLng } from '../../utils/navigation';
 import { getCapabilityRoute } from './home-capabilities';
 import './HomePage.css';
@@ -18,7 +23,6 @@ interface NearbySpot {
   lat: number;
   lng: number;
   desc: string;
-  icon: string;
   distance: number;
 }
 
@@ -48,12 +52,12 @@ const SPOT_CARDS = [
 ];
 
 const HOT_QUESTIONS = [
-  { q: '灵山大佛有多高？', icon: '📏' },
-  { q: '门票价格是多少？', icon: '🎫' },
-  { q: '九龙灌浴表演时间？', icon: '⏰' },
-  { q: '游览路线推荐？', icon: '🗺️' },
-  { q: '梵宫有什么好看的？', icon: '✨' },
-  { q: '灵山的历史渊源？', icon: '📜' },
+  { q: '灵山大佛有多高？', icon: <ColumnHeightOutlined /> },
+  { q: '门票价格是多少？', icon: <TagsOutlined /> },
+  { q: '九龙灌浴表演时间？', icon: <ClockCircleOutlined /> },
+  { q: '游览路线推荐？', icon: <CompassOutlined /> },
+  { q: '梵宫有什么好看的？', icon: <StarOutlined /> },
+  { q: '灵山的历史渊源？', icon: <ReadOutlined /> },
 ];
 
 export default function HomePage() {
@@ -107,27 +111,27 @@ export default function HomePage() {
   // WGS84 坐标（与浏览器 GPS 同一坐标系）。灵山大佛/祥符禅寺/九龙灌浴/梵宫/五印坛城/拈花湾取自 OSM 实测，
   // 其余按景区中轴线与拈花湾路网布局推算，精度约 ±100m
   const ALL_SPOTS_WITH_COORDS: Array<Omit<NearbySpot, 'distance'>> = [
-    { name: '灵山大佛', lat: 31.43205, lng: 120.09151, desc: '88米世界最高青铜立佛，登顶抱佛脚俯瞰太湖', icon: '🗿' },
-    { name: '九龙灌浴', lat: 31.42662, lng: 120.09523, desc: '大型音乐群雕，花开见佛九龙吐水', icon: '🌊' },
-    { name: '灵山梵宫', lat: 31.43065, lng: 120.09756, desc: '东方卢浮宫，佛教艺术殿堂', icon: '🏛️' },
-    { name: '五印坛城', lat: 31.42664, lng: 120.09813, desc: '藏传佛教风格，有小布达拉宫之称', icon: '🏰' },
-    { name: '祥符禅寺', lat: 31.42986, lng: 120.09309, desc: '唐代千年古刹，灵山佛教文化发源地', icon: '🛕' },
-    { name: '拈花湾', lat: 31.42112, lng: 120.07161, desc: '禅意小镇，慢生活体验', icon: '🌸' },
-    { name: '灵山大照壁', lat: 31.42250, lng: 120.09740, desc: '华夏第一壁，赵朴初题字', icon: '🪨' },
-    { name: '菩提大道', lat: 31.42400, lng: 120.09670, desc: '250米印度菩提树拱廊，禅意漫步', icon: '🌳' },
-    { name: '百子戏弥勒', lat: 31.42540, lng: 120.09760, desc: '青铜群雕，摸弥勒肚皮享福气', icon: '👶' },
-    { name: '曼飞龙塔', lat: 31.42800, lng: 120.09900, desc: '复刻西双版纳白塔，异域风情', icon: '🗼' },
-    { name: '无尽意斋', lat: 31.43050, lng: 120.09180, desc: '赵朴初先生纪念馆，禅茶品鉴', icon: '🍵' },
-    { name: '佛足坛', lat: 31.42330, lng: 120.09700, desc: '青铜巨型佛足印，触摸祈福', icon: '🦶' },
-    { name: '五智门', lat: 31.42460, lng: 120.09630, desc: '汉白玉牌坊，五门象征五方五佛', icon: '⛩️' },
-    { name: '降魔浮雕', lat: 31.42500, lng: 120.09610, desc: '巨型石雕，再现佛陀降魔成道', icon: '🗿' },
-    { name: '阿育王柱', lat: 31.42530, lng: 120.09590, desc: '整块花岗岩雕刻，重180吨', icon: '🪨' },
-    { name: '梵天花海', lat: 31.41960, lng: 120.07620, desc: '30000㎡四季花海，拍照圣地', icon: '🌺' },
-    { name: '香月花街', lat: 31.41950, lng: 120.07080, desc: '800米禅意商业街，非遗手作', icon: '🏮' },
-    { name: '五灯湖', lat: 31.42000, lng: 120.07280, desc: '小镇最大水景，夜间灯光秀', icon: '💡' },
-    { name: '鹿鸣谷', lat: 31.42430, lng: 120.07630, desc: '山林幽静区，听鹿鸣山涧', icon: '🦌' },
-    { name: '佛教文化博览馆', lat: 31.43205, lng: 120.09151, desc: '大佛座基内万佛殿，免费讲解', icon: '🏯' },
-    { name: '拈花广场', lat: 31.41780, lng: 120.06950, desc: '拈花湾入口，禅意开园仪式', icon: '🌸' },
+    { name: '灵山大佛', lat: 31.43205, lng: 120.09151, desc: '88米世界最高青铜立佛，登顶抱佛脚俯瞰太湖' },
+    { name: '九龙灌浴', lat: 31.42662, lng: 120.09523, desc: '大型音乐群雕，花开见佛九龙吐水' },
+    { name: '灵山梵宫', lat: 31.43065, lng: 120.09756, desc: '东方卢浮宫，佛教艺术殿堂' },
+    { name: '五印坛城', lat: 31.42664, lng: 120.09813, desc: '藏传佛教风格，有小布达拉宫之称' },
+    { name: '祥符禅寺', lat: 31.42986, lng: 120.09309, desc: '唐代千年古刹，灵山佛教文化发源地' },
+    { name: '拈花湾', lat: 31.42112, lng: 120.07161, desc: '禅意小镇，慢生活体验' },
+    { name: '灵山大照壁', lat: 31.42250, lng: 120.09740, desc: '华夏第一壁，赵朴初题字' },
+    { name: '菩提大道', lat: 31.42400, lng: 120.09670, desc: '250米印度菩提树拱廊，禅意漫步' },
+    { name: '百子戏弥勒', lat: 31.42540, lng: 120.09760, desc: '青铜群雕，摸弥勒肚皮享福气' },
+    { name: '曼飞龙塔', lat: 31.42800, lng: 120.09900, desc: '复刻西双版纳白塔，异域风情' },
+    { name: '无尽意斋', lat: 31.43050, lng: 120.09180, desc: '赵朴初先生纪念馆，禅茶品鉴' },
+    { name: '佛足坛', lat: 31.42330, lng: 120.09700, desc: '青铜巨型佛足印，触摸祈福' },
+    { name: '五智门', lat: 31.42460, lng: 120.09630, desc: '汉白玉牌坊，五门象征五方五佛' },
+    { name: '降魔浮雕', lat: 31.42500, lng: 120.09610, desc: '巨型石雕，再现佛陀降魔成道' },
+    { name: '阿育王柱', lat: 31.42530, lng: 120.09590, desc: '整块花岗岩雕刻，重180吨' },
+    { name: '梵天花海', lat: 31.41960, lng: 120.07620, desc: '30000㎡四季花海，拍照圣地' },
+    { name: '香月花街', lat: 31.41950, lng: 120.07080, desc: '800米禅意商业街，非遗手作' },
+    { name: '五灯湖', lat: 31.42000, lng: 120.07280, desc: '小镇最大水景，夜间灯光秀' },
+    { name: '鹿鸣谷', lat: 31.42430, lng: 120.07630, desc: '山林幽静区，听鹿鸣山涧' },
+    { name: '佛教文化博览馆', lat: 31.43205, lng: 120.09151, desc: '大佛座基内万佛殿，免费讲解' },
+    { name: '拈花广场', lat: 31.41780, lng: 120.06950, desc: '拈花湾入口，禅意开园仪式' },
   ];
 
   function haversineM(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -188,16 +192,16 @@ export default function HomePage() {
   };
 
   const CATEGORIES = [
-    { key: 'spots', label: '景点', icon: '🏛️' },
-    { key: 'toilet', label: '厕所', icon: '🚻' },
-    { key: 'shop', label: '商店', icon: '🛒' },
-    { key: 'nursery', label: '母婴室', icon: '🍼' },
-    { key: 'entrance', label: '出入口', icon: '🚪' },
-    { key: 'visitor_center', label: '游客中心', icon: '🏢' },
-    { key: 'ticket', label: '售票处', icon: '🎫' },
-    { key: 'hotel', label: '住宿', icon: '🏨' },
-    { key: 'rest', label: '休息区', icon: '🪑' },
-    { key: 'sightseeing', label: '观光车站', icon: '🚌' },
+    { key: 'spots', label: '景点', icon: <EnvironmentOutlined /> },
+    { key: 'toilet', label: '厕所', icon: <ManOutlined /> },
+    { key: 'shop', label: '商店', icon: <ShopOutlined /> },
+    { key: 'nursery', label: '母婴室', icon: <HeartOutlined /> },
+    { key: 'entrance', label: '出入口', icon: <LoginOutlined /> },
+    { key: 'visitor_center', label: '游客中心', icon: <InfoCircleOutlined /> },
+    { key: 'ticket', label: '售票处', icon: <TagsOutlined /> },
+    { key: 'hotel', label: '住宿', icon: <HomeOutlined /> },
+    { key: 'rest', label: '休息区', icon: <CoffeeOutlined /> },
+    { key: 'sightseeing', label: '观光车站', icon: <CarOutlined /> },
   ];
 
   // Parallax calculations
@@ -214,7 +218,7 @@ export default function HomePage() {
       >
         <div className="sticky-nav__inner">
           <div className="sticky-nav__brand" onClick={() => scrollToId('top')}>
-            <span className="sticky-nav__logo">🏯</span>
+            <span className="sticky-nav__logo"><LingMark size={26} /></span>
             <div>
               <div className="sticky-nav__title">灵山胜境</div>
               <div className="sticky-nav__subtitle">AI 数字人导游</div>
@@ -298,7 +302,7 @@ export default function HomePage() {
             <StarFilled style={{ color: '#FFD700', marginRight: 6 }} />
             国家 5A 级旅游景区 · 东方禅意智慧行
           </div>
-          <div className="hero-icon">🏯</div>
+          <div className="hero-icon"><LingMark size={54} strokeWidth={1.1} /></div>
           <Title level={1} className="hero-title">
             灵山胜境
           </Title>
@@ -440,7 +444,7 @@ export default function HomePage() {
               className="hot-q-tag"
               onClick={() => navigate(`/qa?q=${encodeURIComponent(item.q)}`)}
             >
-              <span>{item.icon}</span>
+              <span className="hot-q-icon">{item.icon}</span>
               <span>{item.q}</span>
             </Tag>
           ))}
@@ -452,7 +456,7 @@ export default function HomePage() {
         <div className="section-header">
           <div className="section-pill">SMART NAVIGATION</div>
           <AimOutlined className="section-icon" />
-          <Title level={3} style={{ marginTop: 4, marginBottom: 4 }}>📍 附近景点与设施</Title>
+          <Title level={3} style={{ marginTop: 4, marginBottom: 4 }}><EnvironmentOutlined /> 附近景点与设施</Title>
           <Paragraph type="secondary">开启定位，发现您身边的灵山美景与便民设施</Paragraph>
         </div>
 
@@ -465,7 +469,7 @@ export default function HomePage() {
               loading={locating}
               style={{
                 height: 48, borderRadius: 24, paddingInline: 32,
-                background: 'linear-gradient(135deg, #c41d7f, #e91e63)',
+                background: 'linear-gradient(135deg, var(--brand-red-dark), var(--brand-red))',
                 border: 'none', color: '#fff', fontSize: 15,
                 boxShadow: '0 4px 16px rgba(196,29,127,0.3)',
               }}
@@ -477,7 +481,7 @@ export default function HomePage() {
 
         {geoError && (
           <div style={{ textAlign: 'center' }}>
-            <Paragraph type="secondary" style={{ fontSize: 13 }}>⚠️ {geoError}</Paragraph>
+            <Paragraph type="secondary" style={{ fontSize: 13 }}><WarningOutlined /> {geoError}</Paragraph>
             <Button icon={<AimOutlined />} onClick={handleLocate} loading={locating} style={{ borderRadius: 16, marginTop: 8 }}>
               重试定位
             </Button>
@@ -524,7 +528,7 @@ export default function HomePage() {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <span style={{ fontSize: 26 }}>{spot.icon}</span>
+                        <span className="poi-icon"><EnvironmentOutlined /></span>
                         <div style={{ flex: 1 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <Text strong style={{ fontSize: 14 }}>{spot.name}</Text>
@@ -548,7 +552,7 @@ export default function HomePage() {
                             );
                           }}
                         >
-                          🚗 去这里
+                          <CompassOutlined /> 去这里
                         </a>
                       </div>
                     </Card>
@@ -569,7 +573,7 @@ export default function HomePage() {
                   return (
                     <Card key={i} hoverable size="small" style={{ borderRadius: 14, marginBottom: 10, border: '1px solid #eee' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <span style={{ fontSize: 20 }}>{CATEGORIES.find(c => c.key === activeCategory)?.icon}</span>
+                        <span className="poi-icon">{CATEGORIES.find(c => c.key === activeCategory)?.icon}</span>
                         <div style={{ flex: 1 }}>
                           <Text strong style={{ fontSize: 14 }}>{f.name}</Text>
                           <Text type="secondary" style={{ marginLeft: 8, fontSize: 12 }}>{distText}</Text>
@@ -591,7 +595,7 @@ export default function HomePage() {
                              }
                            }}
                         >
-                          🚗 去这里
+                          <CompassOutlined /> 去这里
                         </a>
                       </div>
                     </Card>
@@ -628,7 +632,7 @@ export default function HomePage() {
             setShowDhBubble(true);
           }}
         >
-          <div className="dh-trigger-avatar">🧘‍♀️</div>
+          <div className="dh-trigger-avatar"><LingMark size={22} /></div>
           <div className="dh-trigger-text">
             <div className="dh-trigger-status">
               <span>AI 导游</span>
@@ -641,7 +645,7 @@ export default function HomePage() {
 
       {/* ==================== Footer ==================== */}
       <footer className="home-footer">
-        <div className="footer-brand">🏯 灵山胜境 AI 数字人导游</div>
+        <div className="footer-brand"><LingMark size={20} /> 灵山胜境 AI 数字人导游</div>
         <div className="footer-links">
           <span onClick={() => window.open('/admin/login', '_blank')}><SettingOutlined /> 管理后台</span>
         </div>
