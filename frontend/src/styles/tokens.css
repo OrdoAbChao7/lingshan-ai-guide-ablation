@@ -1,0 +1,114 @@
+/* ============================================================================
+   灵小禅 · 全局设计令牌
+   ----------------------------------------------------------------------------
+   三层结构：primitives → semantic → component（组件层在各页面 CSS 内派发）。
+   三个业务域共享同一套"规则"，但各有自己的"色板"：
+     · 游客端 visitor  → 宣纸暖色（此文件 primary）
+     · 管理后台 admin  → 宣纸底 + 墨色侧栏（同源品牌，工具化布局）
+     · SkyGuard 大屏   → 深色运维（令牌在 CommandCenterPage.css 内自带，不互相污染）
+   所有正文色对白底 ≥ 4.5:1，元数据色对纸底 ≥ 4.5:1（实测见 docs/skyguard/UI_DESIGN_SYSTEM.md）
+   ========================================================================== */
+
+:root {
+  /* ---- 品牌原色 ---- */
+  --brand-red: #c41d7f;
+  --brand-red-dark: #9c1558;
+  --brand-red-soft: #fdf2f8;
+  --brand-gold: #d4a853;
+  --brand-gold-strong: #8a6a2f; /* 描金作为文字时降到 5.02:1 */
+  --brand-gold-soft: #fbf3e2;
+  --brand-teal: #2e7d5b;
+
+  /* ---- 表面（宣纸体系，靠明度分层不靠阴影） ---- */
+  --surface-0: #f6f2ec; /* 页面底（宣纸，比纯灰更暖） */
+  --surface-1: #ffffff; /* 卡片 */
+  --surface-2: #faf6f0; /* 次级块 */
+  --surface-3: #f1ebe2; /* 输入/嵌入块 */
+  --surface-ink: #241c18; /* 深色侧栏 */
+  --surface-ink-2: #1b1512;
+
+  /* ---- 文本 ---- */
+  --text-1: #241c18; /* 16.7:1 */
+  --text-2: #5b5148; /* 7.7:1 */
+  --text-3: #6d6259; /* 5.9:1 —— 允许用作元数据 */
+  --text-invert: #fdf9f5;
+
+  /* ---- 线条 ---- */
+  --line-1: rgba(36, 28, 24, 0.08);
+  --line-2: rgba(36, 28, 24, 0.14);
+  --line-gold: rgba(212, 168, 83, 0.34);
+  --line-ink: rgba(253, 249, 245, 0.14);
+
+  /* ---- 语义色（文字态统一用深色档，保证对比度） ---- */
+  --ok: #1f7a52;
+  --ok-bg: #edf7f1;
+  --warn: #8a6a2f;
+  --warn-bg: #fdf6e7;
+  --danger: #c0392b;
+  --danger-bg: #fdf0ee;
+  --info: #3a6ea5;
+  --info-bg: #eef4fb;
+
+  /* ---- 圆角 ---- */
+  --r-1: 6px;
+  --r-2: 10px;
+  --r-3: 14px;
+  --r-4: 18px;
+  --r-pill: 999px;
+
+  /* ---- 间距（8px 节奏） ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  /* ---- 字号阶梯（固定 8 档，禁止游离数值） ---- */
+  --fs-11: 12px; /* 元数据下限，不再有 10px 小字 */
+  --fs-12: 13px;
+  --fs-13: 14px;
+  --fs-14: 15px;
+  --fs-16: 17px;
+  --fs-20: 21px;
+  --fs-26: 28px;
+  --fs-34: 36px;
+
+  /* ---- 阴影（浅色域只用两层，深色域不用） ---- */
+  --shadow-1: 0 1px 2px rgba(36, 28, 24, 0.04), 0 2px 8px rgba(36, 28, 24, 0.04);
+  --shadow-2: 0 8px 24px rgba(36, 28, 24, 0.08);
+  --shadow-3: 0 18px 44px rgba(50, 20, 35, 0.1);
+
+  /* ---- 字体 ---- */
+  --font-sans: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Mono', Consolas, monospace;
+
+  /* ---- 动效 ---- */
+  --t-fast: 120ms;
+  --t-base: 200ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- 层级 ---- */
+  --z-sticky: 100;
+  --z-nav: 200;
+  --z-modal: 1000;
+
+  /* ---- 兼容旧令牌（游客端历史 CSS 仍在引用） ---- */
+  --primary: var(--brand-red);
+  --primary-dark: var(--brand-red-dark);
+  --primary-light: #f06292;
+  --gold: var(--brand-gold);
+  --gold-light: #f9e4b7;
+  --bg-warm: #fff8f0;
+  --text-primary: var(--text-1);
+  --text-secondary: var(--text-2);
+  --text-muted: var(--text-3);
+  --radius-sm: var(--r-1);
+  --radius: var(--r-2);
+  --radius-lg: var(--r-3);
+  --radius-xl: var(--r-4);
+  --shadow-sm: var(--shadow-1);
+  --shadow: var(--shadow-2);
+  --shadow-lg: var(--shadow-3);
+}

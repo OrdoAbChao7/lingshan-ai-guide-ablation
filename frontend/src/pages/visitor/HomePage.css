@@ -85,7 +85,7 @@
 
 .sticky-nav__subtitle {
   font-size: 11px;
-  color: #8c7b72;
+  color: var(--text-3);
   margin-top: -2px;
 }
 
@@ -125,7 +125,7 @@
   padding: 0 16px;
   font-size: 12px;
   font-weight: 600;
-  background: linear-gradient(135deg, var(--zen-red), #e91e63);
+  background: linear-gradient(135deg, var(--brand-red-dark), var(--brand-red));
   color: #fff;
   border: none;
   display: flex;
@@ -319,7 +319,7 @@
 }
 
 .hero-btn.primary {
-  background: linear-gradient(135deg, var(--zen-red), #e91e63) !important;
+  background: linear-gradient(135deg, var(--brand-red-dark), var(--brand-red)) !important;
   color: #fff !important;
   box-shadow: 0 6px 24px rgba(196, 29, 127, 0.5) !important;
 }
@@ -553,7 +553,7 @@
 
 .spot-desc {
   font-size: 12px;
-  color: #8c7a72;
+  color: var(--text-3);
   line-height: 1.4;
 }
 
@@ -662,7 +662,7 @@
   gap: 10px;
   padding: 8px 18px 8px 10px;
   border-radius: 32px;
-  background: linear-gradient(135deg, var(--zen-red-dark), var(--zen-red) 60%, #e91e63);
+  background: linear-gradient(135deg, var(--brand-red-dark), var(--brand-red));
   color: #fff;
   border: none;
   box-shadow: 0 8px 28px rgba(196, 29, 127, 0.45);
@@ -702,8 +702,9 @@
 }
 
 .dh-trigger-tag {
-  background: #10b981;
-  color: #064e3b;
+  background: var(--ok-bg);
+  color: var(--ok);
+  border: 1px solid rgba(31, 122, 82, 0.28);
   font-size: 9px;
   font-weight: 800;
   padding: 1px 5px;
@@ -729,7 +730,7 @@
 .home-footer {
   text-align: center;
   padding: 42px 20px;
-  color: #8c7b72;
+  color: var(--text-3);
   font-size: 12px;
   background: rgba(255, 255, 255, 0.5);
   border-top: 1px solid rgba(212, 168, 83, 0.18);
@@ -786,4 +787,55 @@
   .dh-bubble {
     max-width: 210px;
   }
+}
+
+/* ==================== 图标归一化（emoji → 矢量图标） ==================== */
+.sticky-nav__logo {
+  display: inline-flex;
+  color: var(--zen-red);
+}
+
+.hero-icon {
+  color: var(--zen-red);
+  line-height: 0;
+}
+
+.hot-q-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 6px;
+  color: var(--zen-gold);
+  font-size: 14px;
+  vertical-align: -1px;
+}
+
+.hot-q-tag:hover .hot-q-icon {
+  color: #fff;
+}
+
+.poi-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  font-size: 16px;
+  color: var(--zen-red);
+  background: rgba(196, 29, 127, 0.07);
+  border: 1px solid rgba(212, 168, 83, 0.22);
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--zen-red);
+}
+
+.dh-trigger-avatar {
+  display: grid;
+  place-items: center;
+  color: var(--brand-red);
 }

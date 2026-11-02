@@ -7,9 +7,11 @@ import {
   CompassOutlined,
   ClearOutlined, CameraOutlined,
   CaretRightOutlined, SettingOutlined,
+  CheckCircleOutlined, EnvironmentOutlined,
 } from '@ant-design/icons';
 import DigitalHuman from '../../components/visitor/DigitalHuman';
 import { ensureAudioContext } from '../../components/visitor/audio-context';
+import { LingMark } from '../../components/brand/LingMark';
 import './QAPage.css';
 
 const API_BASE = '';
@@ -568,7 +570,7 @@ export default function QAPage() {
 
       <header className="qa-header">
         <Button type="text" icon={<HomeOutlined />} onClick={() => navigate('/')} className="header-btn" />
-        <div className="header-avatar">🏯</div>
+        <div className="header-avatar"><LingMark size={28} /></div>
         <div className="header-info">
           <div className="header-name">灵小禅</div>
           <div className="header-subtitle">AI 数字人导游 · 在线</div>
@@ -577,13 +579,13 @@ export default function QAPage() {
 
         {/* Conversation mode toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 8 }}>
-          <span style={{ fontSize: 11, color: '#999', whiteSpace: 'nowrap' }}>连续对话</span>
+          <span style={{ fontSize: 11, color: 'var(--text-3)', whiteSpace: 'nowrap' }}>连续对话</span>
           <Switch size="small" checked={conversationMode} onChange={setConversationMode} />
         </div>
 
         {/* Auto-play toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 4 }}>
-          <span style={{ fontSize: 11, color: '#999', whiteSpace: 'nowrap' }}>自动播放</span>
+          <span style={{ fontSize: 11, color: 'var(--text-3)', whiteSpace: 'nowrap' }}>自动播放</span>
           <Switch size="small" checked={autoPlay} onChange={setAutoPlay} />
         </div>
 
@@ -623,7 +625,7 @@ export default function QAPage() {
       {showRating && messages.length > 0 && (
         <div className="qa-rating-row">
           {ratingSubmitted ? (
-            <span className="qa-rating-thanks">🌸 感谢您的评价！</span>
+            <span className="qa-rating-thanks"><CheckCircleOutlined /> 感谢您的评价！</span>
           ) : (
             <>
               <span className="qa-rating-label">这次回答对您有帮助吗？</span>
@@ -686,7 +688,7 @@ export default function QAPage() {
                   </div>
                 )}
                 {msg.relatedSpots && msg.relatedSpots.length > 0 && (
-                  <div className="msg-spots">{msg.relatedSpots.map((spot: string) => (<span key={spot} className="spot-tag" onClick={() => handleSend(spot)}>📍 {spot}</span>))}</div>
+                  <div className="msg-spots">{msg.relatedSpots.map((spot: string) => (<span key={spot} className="spot-tag" onClick={() => handleSend(spot)}><EnvironmentOutlined /> {spot}</span>))}</div>
                 )}
               </div>
               {msg.role === 'user' && <div className="msg-avatar user-avatar"><UserOutlined /></div>}

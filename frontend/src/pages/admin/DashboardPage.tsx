@@ -1,16 +1,31 @@
+/**
+ * 运营概览（/admin/dashboard）。
+ *
+ * 版式：统一壳层 → 页签 → KPI 概要条 → 图表分栏 → 明细分栏。
+ * 所有颜色取自设计令牌（不写死 antd/ECharts 默认色），保证与后台其它页一致。
+ */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Row, Col, Card, Statistic, Table, Tag, Button, Badge, Tabs, Select, Input, Space } from 'antd';
+import { Table, Tag, Button, Tabs, Select, Input } from 'antd';
 import {
-  TeamOutlined, SmileOutlined, MessageOutlined,
+  TeamOutlined,
+  SmileOutlined,
+  MessageOutlined,
   EnvironmentOutlined,
-  LogoutOutlined, BookOutlined, 
-  BarChartOutlined, DashboardOutlined, DownloadOutlined,
-  SearchOutlined, ReloadOutlined,
+  BookOutlined,
+  BarChartOutlined,
+  DashboardOutlined,
+  DownloadOutlined,
+  SearchOutlined,
+  ReloadOutlined,
+  BulbOutlined,
+  ExperimentOutlined,
 } from '@ant-design/icons';
 import ReactECharts from 'echarts-for-react';
 import { adminAPI } from '../../services/api';
+import AdminShell from '../../components/admin/AdminShell';
 import AgentArtsPanel from './AgentArtsPanel';
+import './DashboardPage.css';
 
 interface TrendPoint { date: string; score: number; }
 interface HourlyPoint { hour: number; count: number; }
@@ -26,6 +41,8 @@ interface DashboardData {
   today_queries?: number;
   week_queries?: number;
   monthly_queries?: number;
+  total_queries?: number;
+  model?: string;
   avg_satisfaction?: number;
   total_knowledge_chunks?: number;
   total_spots?: number;
@@ -35,6 +52,12 @@ interface DashboardData {
   top_hot_questions?: HotQuestion[];
 }
 
+const CATEGORY_LABEL: Record<string, string> = { ticket: '票价', route: '路线', history: '历史', facility: '设施', other: '其他' };
+
+const CHART_TEXT = { color: '#6d6259', fontSize: 11, fontFamily: 'ui-monospace, Consolas, monospace' };
+const AXIS_LINE = { lineStyle: { color: 'rgba(36,28,24,0.14)' } };
+const SPLIT_LINE = { lineStyle: { color: 'rgba(36,28,24,0.07)' } };
+
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [data, setData] = useState<DashboardData | null>(null);
@@ -43,7 +66,6 @@ export default function DashboardPage() {
   const wsRef = useRef<WebSocket | null>(null);
   const liveCountRef = useRef(0);
 
-  // Conversation detail state
   const [convList, setConvList] = useState<Conversation[]>([]);
   const [convTotal, setConvTotal] = useState(0);
   const [convPage, setConvPage] = useState(1);
@@ -55,11 +77,9 @@ export default function DashboardPage() {
     convFiltersRef.current = convFilters;
   }, [convFilters]);
 
-  // Location / category state
   const [locations, setLocations] = useState<LocationPoint[]>([]);
   const [categoryDist, setCategoryDist] = useState<Record<string, number>>({});
 
-  // WebSocket subscription for real-time updates
   useEffect(() => {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const ws = new WebSocket(`${protocol}//${window.location.host}/ws`);
@@ -69,17 +89,14 @@ export default function DashboardPage() {
       ws.send(JSON.stringify({ type: 'subscribe_admin' }));
     };
 
-    ws.onmessage = (event) => {
+    ws.onmessage = event => {
       try {
         const msg = JSON.parse(event.data) as { type?: string };
         if (msg.type === 'connected') {
           setLiveConnected(true);
         } else if (msg.type === 'new_query') {
           liveCountRef.current += 1;
-          setData((prev) => prev ? {
-            ...prev,
-            today_queries: (prev.today_queries || 0) + 1,
-          } : prev);
+          setData(prev => (prev ? { ...prev, today_queries: (prev.today_queries || 0) + 1 } : prev));
         }
       } catch {
         // Ignore malformed WebSocket messages.
@@ -89,17 +106,20 @@ export default function DashboardPage() {
     ws.onclose = () => setLiveConnected(false);
     ws.onerror = () => setLiveConnected(false);
 
-    return () => { ws.close(); };
+    return () => {
+      ws.close();
+    };
   }, []);
 
   useEffect(() => {
-    adminAPI.getDashboard().then(res => setData(res.data)).catch(err => console.error(err));
+    adminAPI
+      .getDashboard()
+      .then(res => setData(res.data))
+      .catch(err => console.error(err));
   }, []);
 
   const handleQuery = () => {
-    // Use the latest convFilters via a ref snapshot
-    const currentFilters = { ...convFilters };
-    fetchConversations(1, currentFilters);
+    void fetchConversations(1, { ...convFilters });
   };
 
   const fetchConversations = useCallback(async (page = 1, filters: ConversationFilters = {}) => {
@@ -135,7 +155,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (activeTab === 'detail') {
-      queueMicrotask(() => { void fetchConversations(1, convFiltersRef.current); });
+      queueMicrotask(() => {
+        void fetchConversations(1, convFiltersRef.current);
+      });
     }
     if (activeTab === 'satisfaction') {
       queueMicrotask(() => {
@@ -149,251 +171,373 @@ export default function DashboardPage() {
     adminAPI.exportConversations(convFilters);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_user');
-    navigate('/admin/login');
-  };
-
-  if (!data) return <div style={{ padding: 40, textAlign: 'center' }}>加载中...</div>;
-
   const satisfactionOption = {
     tooltip: { trigger: 'item' },
-    series: [{
-      type: 'pie',
-      radius: ['50%', '75%'],
-      itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 3 },
-      label: { show: false },
-      data: [
-        { value: data.sentiment_distribution?.positive || 0, name: '正面', itemStyle: { color: '#52c41a' } },
-        { value: data.sentiment_distribution?.neutral || 0, name: '中性', itemStyle: { color: '#faad14' } },
-        { value: data.sentiment_distribution?.negative || 0, name: '负面', itemStyle: { color: '#ff4d4f' } },
-      ],
-    }],
+    color: ['#1f7a52', '#d4a853', '#c0392b'],
+    series: [
+      {
+        type: 'pie',
+        radius: ['58%', '80%'],
+        itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 3 },
+        label: { show: false },
+        data: [
+          { value: data?.sentiment_distribution?.positive || 0, name: '正面' },
+          { value: data?.sentiment_distribution?.neutral || 0, name: '中性' },
+          { value: data?.sentiment_distribution?.negative || 0, name: '负面' },
+        ],
+      },
+    ],
   };
 
   const trendOption = {
     tooltip: { trigger: 'axis' },
-    grid: { top: 10, bottom: 20, left: 30, right: 10 },
+    grid: { top: 16, bottom: 24, left: 34, right: 12 },
+    textStyle: CHART_TEXT,
     xAxis: {
       type: 'category',
-      data: (data.satisfaction_trend || []).map((d) => d.date),
+      data: (data?.satisfaction_trend || []).map(d => d.date.slice(5)),
+      axisLine: AXIS_LINE,
+      axisTick: { show: false },
+      axisLabel: CHART_TEXT,
     },
-    yAxis: { type: 'value', min: 0, max: 5 },
-    series: [{
-      data: (data.satisfaction_trend || []).map((d) => d.score),
-      type: 'line',
-      smooth: true,
-      lineStyle: { color: '#c41d7f' },
-      itemStyle: { color: '#c41d7f' },
-    }],
+    yAxis: { type: 'value', min: 0, max: 5, splitLine: SPLIT_LINE, axisLabel: CHART_TEXT },
+    series: [
+      {
+        data: (data?.satisfaction_trend || []).map(d => d.score),
+        type: 'line',
+        smooth: true,
+        symbolSize: 5,
+        lineStyle: { color: '#c41d7f', width: 2 },
+        itemStyle: { color: '#c41d7f' },
+        areaStyle: { color: 'rgba(196,29,127,0.08)' },
+      },
+    ],
   };
 
   const hourlyOption = {
     tooltip: { trigger: 'axis' },
-    grid: { top: 10, bottom: 20, left: 30, right: 10 },
+    grid: { top: 16, bottom: 24, left: 34, right: 12 },
+    textStyle: CHART_TEXT,
     xAxis: {
       type: 'category',
-      data: (data.hourly_distribution || []).map((d) => `${d.hour}时`),
+      data: (data?.hourly_distribution || []).map(d => `${d.hour}时`),
+      axisLine: AXIS_LINE,
+      axisTick: { show: false },
+      axisLabel: CHART_TEXT,
     },
-    yAxis: { type: 'value' },
-    series: [{
-      data: (data.hourly_distribution || []).map((d) => d.count),
-      type: 'bar',
-      itemStyle: { color: '#1890ff', borderRadius: [4, 4, 0, 0] },
-    }],
+    yAxis: { type: 'value', splitLine: SPLIT_LINE, axisLabel: CHART_TEXT },
+    series: [
+      {
+        data: (data?.hourly_distribution || []).map(d => d.count),
+        type: 'bar',
+        itemStyle: { color: '#3a6ea5', borderRadius: [3, 3, 0, 0] },
+        barMaxWidth: 18,
+      },
+    ],
   };
 
   const categoryOption = {
     tooltip: { trigger: 'item' },
-    series: [{
-      type: 'pie',
-      radius: '65%',
-      data: [
-        { value: categoryDist?.ticket || 0, name: '票价', itemStyle: { color: '#ff7a45' } },
-        { value: categoryDist?.route || 0, name: '路线', itemStyle: { color: '#1890ff' } },
-        { value: categoryDist?.history || 0, name: '历史', itemStyle: { color: '#722ed1' } },
-        { value: categoryDist?.facility || 0, name: '设施', itemStyle: { color: '#52c41a' } },
-        { value: categoryDist?.other || 0, name: '其他', itemStyle: { color: '#8c8c8c' } },
-      ],
-    }],
+    color: ['#d4a853', '#3a6ea5', '#2e7d5b', '#c41d7f', '#6d6259'],
+    series: [
+      {
+        type: 'pie',
+        radius: ['46%', '70%'],
+        itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 3 },
+        label: { color: '#5b5148', fontSize: 11 },
+        data: [
+          { value: categoryDist?.ticket || 0, name: '票价' },
+          { value: categoryDist?.route || 0, name: '路线' },
+          { value: categoryDist?.history || 0, name: '历史' },
+          { value: categoryDist?.facility || 0, name: '设施' },
+          { value: categoryDist?.other || 0, name: '其他' },
+        ],
+      },
+    ],
   };
 
   const convColumns = [
-    { title: '时间', dataIndex: 'timestamp', key: 'time', width: 160, render: (v: string) => v?.replace('T', ' ').slice(0, 19) },
-    { title: '会话ID', dataIndex: 'session_id', key: 'sid', width: 100, render: (v: string) => v?.slice(0, 8) },
-    { title: '分类', dataIndex: 'category', key: 'cat', width: 70, render: (v: string) => {
-      const cats: Record<string, string> = { ticket: '票价', route: '路线', history: '历史', facility: '设施' };
-      return <Tag>{cats[v] || '其他'}</Tag>;
-    }},
-    { title: '用户问题', dataIndex: 'query', key: 'query', ellipsis: true, width: 200 },
-    { title: 'AI回复', dataIndex: 'answer', key: 'answer', ellipsis: true, width: 250 },
-    { title: '耗时', dataIndex: 'response_time_ms', key: 'rt', width: 80, render: (v: number) => `${v}ms` },
-    { title: '评价', dataIndex: 'feedback', key: 'fb', width: 80, render: (v: string) => {
-      if (v === 'helpful') return <Tag color="green">👍</Tag>;
-      if (v === 'unhelpful') return <Tag color="red">👎</Tag>;
-      return <Tag>-</Tag>;
-    }},
+    {
+      title: '时间',
+      dataIndex: 'timestamp',
+      key: 'time',
+      width: 150,
+      render: (v: string) => <span className="adm-mono-cell">{v?.replace('T', ' ').slice(0, 19)}</span>,
+    },
+    { title: '会话', dataIndex: 'session_id', key: 'sid', width: 92, render: (v: string) => <span className="adm-mono-cell u-muted">{v?.slice(0, 8)}</span> },
+    {
+      title: '分类',
+      dataIndex: 'category',
+      key: 'cat',
+      width: 78,
+      render: (v: string) => <span className="ui-tag ui-tag--brand">{CATEGORY_LABEL[v] || '其他'}</span>,
+    },
+    { title: '用户问题', dataIndex: 'query', key: 'query', ellipsis: true },
+    { title: 'AI 回复', dataIndex: 'answer', key: 'answer', ellipsis: true, width: 300 },
+    {
+      title: '耗时',
+      dataIndex: 'response_time_ms',
+      key: 'rt',
+      width: 88,
+      align: 'right' as const,
+      render: (v: number) => <span className="adm-mono-cell">{v} ms</span>,
+    },
+    {
+      title: '评价',
+      dataIndex: 'feedback',
+      key: 'fb',
+      width: 72,
+      render: (v: string) =>
+        v === 'helpful' ? (
+          <span className="ui-tag ui-tag--ok">有用</span>
+        ) : v === 'unhelpful' ? (
+          <span className="ui-tag ui-tag--danger">无用</span>
+        ) : (
+          <span className="u-muted">—</span>
+        ),
+    },
   ];
 
-  return (
-    <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
-      {/* Header */}
-      <div style={{ background: '#fff', padding: '12px 24px', display: 'flex', alignItems: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-        <span style={{ fontSize: 20, fontWeight: 700, color: '#c41d7f', marginRight: 16 }}>🏯 灵山胜境</span>
-        <span style={{ fontSize: 14, color: '#666' }}>管理后台</span>
-        <div style={{ flex: 1 }} />
-        <Badge status={liveConnected ? 'success' : 'default'} text={liveConnected ? '实时连接' : '未连接'} style={{ marginRight: 16 }} />
-        <Button size="small" style={{ marginRight: 8 }} onClick={() => navigate('/admin/knowledge')}>知识库</Button>
-        <Button size="small" type="primary" style={{ marginRight: 8 }} onClick={() => navigate('/admin/digital-human')}>数字人</Button>
-        <Button icon={<DownloadOutlined />} onClick={handleExportCSV} size="small" style={{ marginRight: 8 }}>导出报告</Button>
-        <Button type="text" icon={<LogoutOutlined />} onClick={handleLogout} />
-      </div>
+  const topQuestions = data?.top_hot_questions || [];
 
-      <Tabs activeKey={activeTab} onChange={setActiveTab} style={{ padding: '0 24px', background: '#fff', marginBottom: 4 }} size="large"
+  return (
+    <AdminShell
+      active="dashboard"
+      title="运营概览"
+      subtitle="问答量、情绪结构与对话明细 · 数据每 5 秒经 WebSocket 增量推送"
+      actions={
+        <>
+          {data?.model ? <span className="ui-tag ui-tag--info">{data.model}</span> : null}
+          <span className={`adm-live${liveConnected ? ' is-on' : ''}`}>
+            <span className="adm-live-dot" aria-hidden="true" />
+            {liveConnected ? '实时连接' : '未连接'}
+          </span>
+          <Button size="small" icon={<DownloadOutlined />} onClick={handleExportCSV}>
+            导出 CSV
+          </Button>
+          <Button size="small" icon={<ExperimentOutlined />} onClick={() => navigate('/command-center')}>
+            安全大屏
+          </Button>
+        </>
+      }
+    >
+      <Tabs
+        activeKey={activeTab}
+        onChange={setActiveTab}
         items={[
           { label: <span><DashboardOutlined /> 概览</span>, key: 'overview' },
           { label: <span><SearchOutlined /> 问答明细</span>, key: 'detail' },
           { label: <span><SmileOutlined /> 满意度分析</span>, key: 'satisfaction' },
-          { label: 'AgentArts 调试', key: 'agentarts' },
+          { label: <span><BulbOutlined /> AgentArts 调试</span>, key: 'agentarts' },
         ]}
       />
 
-      <div style={{ padding: '0 24px 40px' }}>
-        {activeTab === 'agentarts' && <AgentArtsPanel />}
-        {activeTab === 'overview' && (
-          <>
-            {/* Stats */}
-            <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-              <Col xs={12} md={4}><Card><Statistic title="今日问答" value={data.today_queries} prefix={<MessageOutlined />} /></Card></Col>
-              <Col xs={12} md={4}><Card><Statistic title="周问答" value={data.week_queries} prefix={<BarChartOutlined />} /></Card></Col>
-              <Col xs={12} md={4}><Card><Statistic title="月问答" value={data.monthly_queries} prefix={<TeamOutlined />} /></Card></Col>
-              <Col xs={12} md={4}><Card><Statistic title="满意度" value={data.avg_satisfaction} suffix="%" prefix={<SmileOutlined />} /></Card></Col>
-              <Col xs={12} md={4}><Card><Statistic title="总知识分块" value={data.total_knowledge_chunks} prefix={<BookOutlined />} /></Card></Col>
-              <Col xs={12} md={4}><Card><Statistic title="总景点" value={data.total_spots} prefix={<EnvironmentOutlined />} /></Card></Col>
-            </Row>
+      {activeTab === 'agentarts' ? <AgentArtsPanel /> : null}
 
-            {/* Charts */}
-            <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-              <Col xs={24} md={12}>
-                <Card title="情感分布">
-                  <ReactECharts option={satisfactionOption} style={{ height: 250 }} />
-                </Card>
-              </Col>
-              <Col xs={24} md={12}>
-                <Card title="满意度趋势">
-                  <ReactECharts option={trendOption} style={{ height: 250 }} />
-                </Card>
-              </Col>
-            </Row>
+      {activeTab === 'overview' ? (
+        <div className="adm-section">
+          <div className="ui-stat-row">
+            <StatTile icon={<MessageOutlined />} label="今日问答" value={data?.today_queries ?? 0} hint="含实时增量" />
+            <StatTile icon={<BarChartOutlined />} label="本周问答" value={data?.week_queries ?? 0} />
+            <StatTile icon={<TeamOutlined />} label="累计问答" value={data?.total_queries ?? 0} hint="历史全量" />
+            <StatTile icon={<SmileOutlined />} label="平均满意度" value={data?.avg_satisfaction ?? 0} suffix="%" />
+            <StatTile icon={<BookOutlined />} label="知识分块" value={data?.total_knowledge_chunks ?? 0} />
+            <StatTile icon={<EnvironmentOutlined />} label="登记景点" value={data?.total_spots ?? 0} />
+          </div>
 
-            <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-              <Col xs={24} md={12}>
-                <Card title="时段分布（近7天）">
-                  <ReactECharts option={hourlyOption} style={{ height: 250 }} />
-                </Card>
-              </Col>
-              <Col xs={24} md={12}>
-                <Card title="热点问题 Top 10">
-                  {(data.top_hot_questions || []).map((q, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', padding: '4px 0', borderBottom: '1px solid #f0f0f0' }}>
-                      <Tag color={i < 3 ? 'magenta' : 'default'} style={{ marginRight: 8 }}>#{i + 1}</Tag>
-                      <span style={{ flex: 1, fontSize: 13 }}>{q.question}</span>
-                      <Tag>{q.count}次</Tag>
-                    </div>
+          <div className="adm-grid adm-grid--2">
+            <section className="ui-panel">
+              <PanelHead eyebrow="SENTIMENT" title="情感分布" sub="近 7 天问答的情绪占比" />
+              <ReactECharts option={satisfactionOption} style={{ height: 250 }} />
+            </section>
+            <section className="ui-panel">
+              <PanelHead eyebrow="TREND" title="满意度趋势" sub="每日平均分（0–5）" />
+              <ReactECharts option={trendOption} style={{ height: 250 }} />
+            </section>
+          </div>
+
+          <div className="adm-grid adm-grid--2">
+            <section className="ui-panel">
+              <PanelHead eyebrow="HOURLY" title="时段分布" sub="近 7 天各小时提问量" />
+              <ReactECharts option={hourlyOption} style={{ height: 250 }} />
+            </section>
+            <section className="ui-panel">
+              <PanelHead eyebrow="TOP 10" title="热点问题" sub="按提问次数排序" />
+              {topQuestions.length === 0 ? (
+                <p className="ui-empty">暂无热点数据</p>
+              ) : (
+                <ul className="ui-list">
+                  {topQuestions.map((q, i) => (
+                    <li key={q.question} className="ui-list-row">
+                      <span className={`ui-rank${i < 3 ? ' is-top' : ''}`}>{i + 1}</span>
+                      <span className="ui-list-main" title={q.question}>
+                        {q.question}
+                      </span>
+                      <span className="ui-list-meta">{q.count} 次</span>
+                    </li>
                   ))}
-                </Card>
-              </Col>
-            </Row>
-          </>
-        )}
+                </ul>
+              )}
+            </section>
+          </div>
+        </div>
+      ) : null}
 
-        {activeTab === 'detail' && (
-          <>
-            {/* Filters */}
-            <Card size="small" style={{ marginTop: 16 }}>
-              <Space wrap>
-                <Select placeholder="问题分类" allowClear style={{ width: 120 }}
-                  onChange={(v) => setConvFilters((f) => ({ ...f, category: v || undefined }))}>
-                  <Select.Option value="ticket">票价</Select.Option>
-                  <Select.Option value="route">路线</Select.Option>
-                  <Select.Option value="history">历史</Select.Option>
-                  <Select.Option value="facility">设施</Select.Option>
-                  <Select.Option value="other">其他</Select.Option>
-                </Select>
-                <Input placeholder="搜索关键词" prefix={<SearchOutlined />} style={{ width: 200 }}
-                  onPressEnter={(e) => { const v = (e.target as HTMLInputElement).value; setConvFilters((f) => ({ ...f, keyword: v || undefined })); }} />
-                <Button type="primary" icon={<SearchOutlined />} onClick={handleQuery}>查询</Button>
-                <Button icon={<ReloadOutlined />} onClick={() => { setConvFilters({}); fetchConversations(1, {}); }}>重置</Button>
-                <Button icon={<DownloadOutlined />} onClick={handleExportCSV}>导出CSV</Button>
-              </Space>
-            </Card>
-
-            {/* Table */}
-            <Card style={{ marginTop: 12 }}>
-              <Table
-                columns={convColumns}
-                dataSource={convList}
-                rowKey="id"
-                loading={convLoading}
-                size="small"
-                pagination={{
-                  current: convPage,
-                  total: convTotal,
-                  pageSize: 20,
-                  showTotal: (t) => `共 ${t} 条`,
-                  onChange: (p) => fetchConversations(p, convFilters),
-                }}
-                scroll={{ x: 900 }}
+      {activeTab === 'detail' ? (
+        <div className="adm-section">
+          <section className="ui-panel">
+            <div className="adm-filterbar">
+              <Select
+                placeholder="问题分类"
+                allowClear
+                style={{ width: 132 }}
+                onChange={v => setConvFilters(f => ({ ...f, category: v || undefined }))}
+                options={[
+                  { value: 'ticket', label: '票价' },
+                  { value: 'route', label: '路线' },
+                  { value: 'history', label: '历史' },
+                  { value: 'facility', label: '设施' },
+                  { value: 'other', label: '其他' },
+                ]}
               />
-            </Card>
-          </>
-        )}
+              <Input
+                placeholder="搜索关键词"
+                prefix={<SearchOutlined />}
+                style={{ width: 220 }}
+                onPressEnter={e => {
+                  const v = (e.target as HTMLInputElement).value;
+                  setConvFilters(f => ({ ...f, keyword: v || undefined }));
+                }}
+              />
+              <Button type="primary" icon={<SearchOutlined />} onClick={handleQuery}>
+                查询
+              </Button>
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={() => {
+                  setConvFilters({});
+                  void fetchConversations(1, {});
+                }}
+              >
+                重置
+              </Button>
+              <Button icon={<DownloadOutlined />} onClick={handleExportCSV}>
+                导出
+              </Button>
+              <span className="adm-filterbar-note">共 {convTotal} 条记录</span>
+            </div>
+          </section>
 
-        {activeTab === 'satisfaction' && (
-          <>
-            <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-              <Col span={24}>
-                <Card title="问题分类分布">
-                  <ReactECharts option={categoryOption} style={{ height: 300 }} />
-                </Card>
-              </Col>
-            </Row>
-            <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-              <Col span={24}>
-                <Card title="📊 满意度趋势（近30天）">
-                  <ReactECharts option={{
-                    ...trendOption,
-                    xAxis: { ...trendOption.xAxis, data: (data.satisfaction_trend || []).slice(-30).map((d) => d.date) },
-                    series: [{ ...trendOption.series[0], data: (data.satisfaction_trend || []).slice(-30).map((d) => d.score) }],
-                  }} style={{ height: 250 }} />
-                </Card>
-              </Col>
-            </Row>
-            {locations.length > 0 && (
-              <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-                <Col span={24}>
-                  <Card title="游客位置分布（脱敏）">
-                    <div style={{ maxHeight: 300, overflow: 'auto' }}>
-                      <Table
-                        dataSource={locations}
-                        columns={[
-                          { title: '纬度', dataIndex: 'lat', key: 'lat' },
-                          { title: '经度', dataIndex: 'lng', key: 'lng' },
-                          { title: '访问次数', dataIndex: 'count', key: 'count', render: (v: number) => <Tag color="blue">{v}</Tag> },
-                        ]}
-                        rowKey={(r: LocationPoint) => `${r.lat},${r.lng}`}
-                        size="small"
-                        pagination={false}
-                      />
-                    </div>
-                  </Card>
-                </Col>
-              </Row>
-            )}
-          </>
-        )}
+          <section className="ui-panel ui-panel--flush">
+            <Table
+              columns={convColumns}
+              dataSource={convList}
+              rowKey="id"
+              loading={convLoading}
+              size="small"
+              pagination={{
+                current: convPage,
+                total: convTotal,
+                pageSize: 20,
+                showTotal: t => `共 ${t} 条`,
+                onChange: p => void fetchConversations(p, convFilters),
+              }}
+              scroll={{ x: 1000 }}
+            />
+          </section>
+        </div>
+      ) : null}
+
+      {activeTab === 'satisfaction' ? (
+        <div className="adm-section">
+          <section className="ui-panel">
+            <PanelHead eyebrow="CATEGORY" title="问题分类分布" sub="按分类聚合的提问占比" />
+            <ReactECharts option={categoryOption} style={{ height: 290 }} />
+          </section>
+
+          <section className="ui-panel">
+            <PanelHead eyebrow="TREND 30D" title="满意度趋势（近 30 天）" sub="每日平均分" />
+            <ReactECharts
+              option={{
+                ...trendOption,
+                xAxis: {
+                  ...trendOption.xAxis,
+                  data: (data?.satisfaction_trend || []).slice(-30).map(d => d.date.slice(5)),
+                },
+                series: [
+                  { ...trendOption.series[0], data: (data?.satisfaction_trend || []).slice(-30).map(d => d.score) },
+                ],
+              }}
+              style={{ height: 250 }}
+            />
+          </section>
+
+          {locations.length > 0 ? (
+            <section className="ui-panel ui-panel--flush">
+              <div className="adm-panel-inline-head">
+                <PanelHead eyebrow="GEO" title="游客位置分布（脱敏）" sub="仅保留聚合坐标与访问次数" />
+              </div>
+              <Table
+                dataSource={locations}
+                columns={[
+                  { title: '纬度', dataIndex: 'lat', key: 'lat', render: (v: number) => <span className="adm-mono-cell">{v.toFixed(4)}</span> },
+                  { title: '经度', dataIndex: 'lng', key: 'lng', render: (v: number) => <span className="adm-mono-cell">{v.toFixed(4)}</span> },
+                  {
+                    title: '访问次数',
+                    dataIndex: 'count',
+                    key: 'count',
+                    align: 'right' as const,
+                    render: (v: number) => <Tag color="blue">{v}</Tag>,
+                  },
+                ]}
+                rowKey={(r: LocationPoint) => `${r.lat},${r.lng}`}
+                size="small"
+                pagination={false}
+              />
+            </section>
+          ) : null}
+        </div>
+      ) : null}
+    </AdminShell>
+  );
+}
+
+function PanelHead({ eyebrow, title, sub }: { eyebrow: string; title: string; sub: string }) {
+  return (
+    <div className="ui-panel-head">
+      <div className="ui-panel-heading">
+        <span className="ui-eyebrow">{eyebrow}</span>
+        <h2 className="ui-panel-title">{title}</h2>
+        <p className="ui-panel-sub">{sub}</p>
       </div>
+    </div>
+  );
+}
+
+function StatTile({
+  icon,
+  label,
+  value,
+  suffix,
+  hint,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  suffix?: string;
+  hint?: string;
+}) {
+  return (
+    <div className="ui-stat">
+      <span className="ui-stat-head">
+        {icon}
+        {label}
+      </span>
+      <span className="ui-stat-value">
+        {value.toLocaleString('zh-CN')}
+        {suffix ? <small>{suffix}</small> : null}
+      </span>
+      {hint ? <span className="ui-stat-hint">{hint}</span> : null}
     </div>
   );
 }

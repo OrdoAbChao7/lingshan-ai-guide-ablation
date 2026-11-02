@@ -1,9 +1,191 @@
-.admin-dh-preview {
+/* 数字人形象页私有样式 */
+
+.dh-preview {
+  position: sticky;
+  top: calc(60px + var(--sp-4));
+}
+
+.dh-stage {
+  border-radius: var(--r-3);
+  border: 1px solid var(--line-1);
+  padding: var(--sp-4) 0;
+  display: grid;
+  place-items: center;
+  transition: background var(--t-base) var(--ease-out);
+  min-height: 360px;
+}
+
+.dh-preview-actions {
   display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
   justify-content: center;
+  margin-top: var(--sp-3);
+}
+
+.dh-preview-note {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-11);
+  text-align: center;
+}
+.dh-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-11);
+  color: var(--text-2);
+}
+
+/* ---- 外观 ---- */
+
+.dh-appearance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+
+.dh-appearance {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2);
+  background: var(--surface-1);
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--t-fast) ease, background var(--t-fast) ease, box-shadow var(--t-fast) ease;
+}
+.dh-appearance:hover {
+  border-color: var(--line-gold);
+  background: var(--surface-2);
+}
+.dh-appearance.is-selected {
+  border-color: var(--brand-red);
+  background: var(--brand-red-soft);
+  box-shadow: 0 0 0 1px rgba(196, 29, 127, 0.16);
+}
+
+.dh-swatch {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-pill);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.dh-appearance-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.dh-appearance-text strong {
+  font-size: var(--fs-13);
+  font-weight: 600;
+  color: var(--text-1);
+}
+.dh-appearance-text em {
+  font-style: normal;
+  font-size: var(--fs-11);
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.dh-check {
+  position: absolute;
+  top: var(--sp-2);
+  right: var(--sp-2);
+  color: var(--brand-red);
+  font-size: 14px;
+}
+
+/* ---- 声音 ---- */
+
+.dh-voice-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.dh-voice {
+  display: flex;
   align-items: center;
-  min-height: 320px;
-  background: linear-gradient(135deg, #fdf2f8, #f8f4ff);
-  border-radius: 16px;
-  padding: 16px;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2);
+  background: var(--surface-1);
+  transition: border-color var(--t-fast) ease, background var(--t-fast) ease;
+}
+.dh-voice:hover {
+  border-color: var(--line-gold);
+}
+.dh-voice.is-selected {
+  border-color: var(--brand-red);
+  background: var(--brand-red-soft);
+}
+
+.dh-voice-main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  cursor: pointer;
+  min-width: 0;
+  flex: 1;
+}
+.dh-voice-main input {
+  margin-top: 3px;
+  accent-color: var(--brand-red);
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+
+.dh-voice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.dh-voice-text strong {
+  font-size: var(--fs-13);
+  font-weight: 600;
+  color: var(--text-1);
+}
+.dh-voice-text strong em {
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--fs-12);
+  color: var(--text-2);
+  margin-left: 4px;
+}
+.dh-voice-text > span {
+  font-size: var(--fs-11);
+  line-height: 1.55;
+  color: var(--text-3);
+}
+
+.dh-voice-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1180px) {
+  .dh-preview {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .dh-appearance-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

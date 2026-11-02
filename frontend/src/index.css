@@ -1,15 +1,28 @@
-/* ============================================================
-   Ling Shan Tour Guide — Global Styles
-   ============================================================ */
+/* ============================================================================
+   灵小禅 · 全局基座
+   ----------------------------------------------------------------------------
+   仅放真正的全局规则：重置、排版基线、滚动条。所有令牌在 styles/tokens.css，
+   所有跨页面组件在 styles/ui.css，页面私有样式在各页面 CSS 内。
+   ========================================================================== */
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
-  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  line-height: 1.6;
+  color: var(--text-1);
+  background: var(--surface-0);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #faf8f5;
-  color: #333;
   overflow-x: hidden;
 }
 
@@ -19,39 +32,39 @@ body {
   min-height: 100vh;
 }
 
-:root {
-  --primary: #c41d7f;
-  --primary-dark: #9c1558;
-  --primary-light: #f06292;
-  --gold: #d4a853;
-  --gold-light: #f9e4b7;
-  --bg-warm: #fff8f0;
-  --bg-gradient: linear-gradient(135deg, #fff8f0 0%, #fdf2f8 50%, #f8f4ff 100%);
-  --text-primary: #1a1a1a;
-  --text-secondary: #666;
-  --text-muted: #999;
-  --radius-sm: 8px;
-  --radius: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-  --shadow: 0 4px 20px rgba(0,0,0,0.06);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+img,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(196,29,127,0.15); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(196,29,127,0.25); }
-
-/* Selection */
-::selection { background: rgba(196,29,127,0.15); color: var(--primary); }
-
-/* Ant Design overrides */
-.ant-btn-primary {
-  box-shadow: 0 2px 8px rgba(196,29,127,0.25) !important;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-1);
 }
-.ant-card {
-  transition: transform 0.25s, box-shadow 0.25s !important;
+
+/* ---- 滚动条 ---- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(36, 28, 24, 0.16);
+  border-radius: var(--r-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(36, 28, 24, 0.26);
+}
+
+/* ---- 过渡期兼容：旧页面仍在使用 .page-container ---- */
+.page-container {
+  min-height: 100vh;
 }

@@ -1,0 +1,356 @@
+/* ============================================================================
+   管理后台登录 — 品牌门面
+   ----------------------------------------------------------------------------
+   与游客端共用 --zen-* 品牌令牌（灵山朱 #c41d7f / 描金 #d4a853 / 宣纸 #faf7f3）。
+   作用域限定 .lp-root，不向全局泄漏。表单控件只补圆角与描边，其余交给 antd。
+   ========================================================================== */
+
+.lp-root {
+  --lp-ink: #2c2420;
+  --lp-ink-2: #6b5f57;
+  --lp-ink-3: #75685f; /* 5.38:1 on #fff —— 不低于 4.5:1 */
+  --lp-paper: #faf7f3;
+  --lp-line: rgba(212, 168, 83, 0.28);
+  --lp-red: var(--zen-red, #c41d7f);
+  --lp-red-dark: var(--zen-red-dark, #9c1558);
+  --lp-gold: var(--zen-gold, #d4a853);
+  --lp-gold-ink: #8a6a2f; /* 描金用于文字时降到 5.02:1；原色仅用于分隔线等装饰 */
+
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+  background: var(--lp-paper);
+  color: var(--lp-ink);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lp-root *,
+.lp-root *::before,
+.lp-root *::after {
+  box-sizing: border-box;
+}
+
+.lp-root :focus-visible {
+  outline: 2px solid var(--lp-red);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------------- 左：品牌叙事 ---------------- */
+
+.lp-brand {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 64px clamp(32px, 6vw, 88px);
+  background:
+    radial-gradient(900px 520px at 8% 6%, rgba(196, 29, 127, 0.1), transparent 62%),
+    radial-gradient(760px 520px at 92% 96%, rgba(212, 168, 83, 0.18), transparent 60%),
+    linear-gradient(160deg, #fffaf4 0%, #fdf3f6 46%, #f7f2ea 100%);
+}
+
+/* 极淡的水墨山形，用两个径向渐变做出层峦感 */
+.lp-brand-orbs {
+  position: absolute;
+  inset: auto -10% -22% -10%;
+  height: 62%;
+  background:
+    radial-gradient(58% 100% at 22% 100%, rgba(44, 36, 32, 0.09), transparent 70%),
+    radial-gradient(46% 92% at 60% 104%, rgba(44, 36, 32, 0.06), transparent 72%),
+    radial-gradient(64% 100% at 92% 100%, rgba(196, 29, 127, 0.07), transparent 74%);
+  pointer-events: none;
+}
+
+.lp-brand-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lp-lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lp-lockup-mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  color: var(--lp-red);
+  border: 1px solid var(--lp-line);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 6px 16px rgba(196, 29, 127, 0.08);
+}
+.lp-lockup-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.lp-lockup-text strong {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.lp-lockup-text em {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lp-ink-3);
+}
+
+.lp-headline {
+  margin: 4px 0 0;
+  font-size: clamp(30px, 3.2vw, 42px);
+  line-height: 1.18;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--lp-ink);
+}
+.lp-headline span {
+  display: block;
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--lp-red);
+  margin-top: 8px;
+}
+
+.lp-lede {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--lp-ink-2);
+  max-width: 30em;
+}
+
+.lp-points {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lp-points li {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 168, 83, 0.2);
+  background: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--lp-ink-2);
+}
+.lp-points b {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--lp-ink);
+  margin-bottom: 2px;
+}
+.lp-point-index {
+  font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--lp-red);
+  padding-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+.lp-brand-foot {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--lp-ink-3);
+}
+.lp-inline-link {
+  border: none;
+  background: none;
+  padding: 0 2px;
+  font: inherit;
+  color: var(--lp-red);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(196, 29, 127, 0.35);
+}
+.lp-inline-link:hover {
+  border-bottom-color: var(--lp-red);
+}
+
+/* ---------------- 右：表单 ---------------- */
+
+.lp-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 48px clamp(24px, 5vw, 64px);
+  background: #fffdfb;
+  border-left: 1px solid rgba(212, 168, 83, 0.2);
+}
+
+.lp-card {
+  width: 100%;
+  max-width: 388px;
+  padding: 32px 30px 24px;
+  border-radius: 18px;
+  border: 1px solid rgba(212, 168, 83, 0.24);
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(50, 20, 35, 0.07), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+}
+
+.lp-card-head {
+  margin-bottom: 22px;
+}
+.lp-card-eyebrow {
+  display: inline-block;
+  font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--lp-gold-ink);
+  border-bottom: 1px solid rgba(212, 168, 83, 0.4);
+  padding-bottom: 3px;
+}
+.lp-card-title.ant-typography {
+  margin: 12px 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--lp-ink);
+}
+.lp-card-sub {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--lp-ink-3);
+  letter-spacing: 0.02em;
+}
+
+/* antd 控件只补形状与描边色 */
+.lp-root .lp-form .ant-input-affix-wrapper,
+.lp-root .lp-form .ant-input {
+  border-radius: 10px !important;
+}
+.lp-root .lp-form .ant-input-affix-wrapper {
+  border-color: rgba(212, 168, 83, 0.32) !important;
+  padding-block: 9px !important;
+  background: #fffdfb;
+}
+.lp-root .lp-form .ant-input-affix-wrapper:hover {
+  border-color: rgba(196, 29, 127, 0.4) !important;
+}
+.lp-root .lp-form .ant-input-affix-wrapper-focused,
+.lp-root .lp-form .ant-input-affix-wrapper:focus-within {
+  border-color: var(--lp-red) !important;
+  box-shadow: 0 0 0 3px rgba(196, 29, 127, 0.1) !important;
+}
+.lp-root .lp-form .ant-input-prefix {
+  color: rgba(156, 143, 134, 0.9);
+  margin-inline-end: 9px;
+}
+.lp-root .lp-form .ant-form-item {
+  margin-bottom: 16px;
+}
+.lp-root .lp-form-submit {
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+
+.lp-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid rgba(212, 168, 83, 0.18);
+}
+.lp-root .lp-back.ant-btn {
+  padding: 0;
+  height: auto;
+  font-size: 12.5px;
+  color: var(--lp-ink-2);
+}
+.lp-root .lp-back.ant-btn:hover {
+  color: var(--lp-red) !important;
+}
+.lp-card-note {
+  font-size: 11px;
+  color: var(--lp-ink-3);
+  letter-spacing: 0.02em;
+}
+
+.lp-legal {
+  margin: 0;
+  font-size: 11px;
+  color: var(--lp-ink-3);
+  text-align: center;
+  max-width: 34em;
+}
+
+/* ---------------- 响应式 ---------------- */
+
+@media (max-width: 1024px) {
+  .lp-root {
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.9fr);
+  }
+  .lp-brand {
+    padding: 44px 32px;
+  }
+  .lp-points li {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 860px) {
+  .lp-root {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lp-brand {
+    padding: 32px 24px 28px;
+    align-items: flex-start;
+  }
+  .lp-brand-orbs {
+    height: 46%;
+    opacity: 0.7;
+  }
+  .lp-headline {
+    font-size: 26px;
+  }
+  .lp-headline span {
+    font-size: 15px;
+  }
+  .lp-lede {
+    font-size: 13px;
+  }
+  .lp-points {
+    display: none;
+  }
+  .lp-panel {
+    border-left: none;
+    border-top: 1px solid rgba(212, 168, 83, 0.2);
+    padding: 28px 20px 40px;
+    justify-content: flex-start;
+  }
+  .lp-card {
+    padding: 24px 20px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-root * {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
